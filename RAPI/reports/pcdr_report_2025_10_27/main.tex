@@ -14,7 +14,7 @@
                                                           % use the \thanks command
 \overrideIEEEmargins
 % See the \addtolength command later in the file to balance the column lengths
-% on the last page of the document
+% on the last page of the document.
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -22,18 +22,24 @@
 \usepackage{graphicx}
 
 \title{\LARGE \bf
-Rapport (2025.10.27) Reconnaissance Automatique de Plaques d'Immatriculation
+Rapport (2025.10.27) : Reconnaissance Automatique des Numéros \\de Plaque
+d'Immatriculation
 }
 
 \author{Équipe de Recherche en Intelligence Artificielle% <-this % stops a space
-\thanks{*Ce travail a été réalisé par le département de recherche en IA}% <-this % stops a space
+\thanks{*Ce travail a été réalisé par le membre de l'équipe de laboratoire
+de recherche en IA de UATM GASA FORMATION. }% <- this % stops a space
 }
 
 % \author{Arnold T.$^{1}$, Prince T.$^{2}$, Farhanath M.$^{3}$% <-this % stops a space
-% \thanks{*Ce travail a été soutenu par le département de recherche en intelligence artificielle et vision par ordinateur}% <-this % stops a space
-% \thanks{$^{1}$Arnold T. est spécialiste en architectures de deep learning et optimisation de modèles}%
+% \thanks{*Ce travail a été soutenu par le département de recherche
+% en intelligence artificielle et vision par ordinateur}% <- this % stops
+% a space
+% \thanks{$^{1}$Arnold T. est spécialiste en architectures de deep learning
+% et optimisation de modèles}%
 % \thanks{$^{2}$Prince T. est expert en traitement d'images et annotation de données}%
-% \thanks{$^{3}$Farhanath M. est responsable de l'évaluation des performances et métriques}%
+% \thanks{$^{3}$Farhanath M. est responsable de l'évaluation des performances
+% et métriques}%
 % }
 
 
@@ -47,7 +53,14 @@ Rapport (2025.10.27) Reconnaissance Automatique de Plaques d'Immatriculation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
 
-Ce document présente l'évolution d'un système de reconnaissance automatique de plaques d'immatriculation utilisant le deep learning. Notre recherche compare une approche monolithique basée sur YOLOv11 avec une architecture hybride séparant la détection et la classification des caractères. Les résultats démontrent que l'approche hybride améliore significativement les performances tout en réduisant les coûts d'annotation de 75\%. L'exactitude atteint 95.85\% avec des perspectives d'optimisation vers l'excellence.
+Ce document présente l'évolution d'un système de reconnaissance automatique
+de plaques d'immatriculation utilisant le deep learning.
+Notre recherche compare une approche monolithique basée sur YOLOv11
+avec une architecture hybride séparant la détection et la classification
+des caractères. Les résultats démontrent que l'approche hybride améliore
+significativement les performances tout en réduisant les coûts d'annotation
+de 25\%. Le score F1 atteint 97.25\% avec des perspectives d'optimisation
+vers l'excellence.
 
 \end{abstract}
 
@@ -62,7 +75,8 @@ Ce document présente l'évolution d'un système de reconnaissance automatique d
 
 \subsection{Architecture et Caractéristiques}
 
-Notre implémentation initiale utilisait un modèle YOLOv11 (You Only Look Once version 11) monolithique, caractérisé par :
+Notre implémentation initiale utilisait un modèle YOLOv11
+(You Only Look Once version 11) monolithique, caractérisé par :
 
 \begin{itemize}
 \item \textbf{Architecture unifiée} : Détection et classification simultanées en une seule passe
@@ -76,7 +90,9 @@ L'approche monolithique présentait cependant des limitations fondamentales :
 \text{Temps d'annotation} = n \times t_{\text{caractère}} \times c_{\text{complexité}}
 \end{equation}
 
-où $n$ représente le nombre d'images, $t_{\text{caractère}}$ le temps par caractère, et $c_{\text{complexité}}$ la complexité de l'annotation simultanée.
+où $n$ représente le nombre d'images, $t_{\text{caractère}}$
+le temps par caractère, et $c_{\text{complexité}}$ la complexité
+de l'annotation simultanée en plusieurs classes.
 
 \subsection{Performances et Limitations}
 
@@ -98,15 +114,30 @@ Précision & 94.97\% \\
 \hline
 Rappel & 92.23\% \\
 \hline
-Score F1 & 93.58\% \\
+\textbf{Score F1} & \textbf{93.58\%} \\
 \hline
 Temps d'inférence & 19.6ms \\
+\hline
+Précision des prédictions confiantes (> 92 \%) & 83.54\% \\
 \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-L'analyse critique de ces résultats montre que bien que le mAP50 soit acceptable, le mAP50-95 modeste indique une sensibilité aux variations de positionnement et de taille des caractères. La nature conflictuelle de l'optimisation simultanée de la détection et de la classification limitait les performances maximales atteignables.
+L'analyse critique de ces résultats montre que bien que le mAP50 soit acceptable,
+le mAP50-95 modeste indique une sensibilité aux variations de positionnement
+et de taille des caractères.
+% La nature conflictuelle de l'optimisation
+% simultanée de la détection et de la classification limitait les performances maximales atteignables.
+Mais, le problème avec ce modele est qu'il faux assez d'image de plaque
+labelisées dans la dataset améliorer la précision d'identification de numéro.
+Ce qui reviens très couteux en ressource humaine. De plus, pour labeliser
+une seule image de plaque, il faut plusieurs minutes a une personne.
+Enfin le mode de fonctionnement du model YOLO ne permettra pas d'atteindre
+des précisions extrême car pendant l'entrainement, le modele optimise
+sur la classification de l'objet detecté alors que au début de l'entraînement,
+les boites de detection qu'il propose ne couvre pas encore le numéro
+en question. Ce qui entraîne de mauvaises classification.
 
 \section{LE PRÉSENT : ARCHITECTURE HYBRIDE}
 
@@ -123,8 +154,11 @@ Face aux limitations du modèle monolithique, nous avons développé une archite
 L'architecture hybride offre des avantages significatifs :
 
 \begin{equation}
-\text{Gain d'annotation} = \frac{t_{\text{monolithique}} - t_{\text{hybride}}}{t_{\text{monolithique}}} = 75\%
+\text{Gain d'annotation} = \frac{t_{\text{monolithique}} - t_{\text{hybride}}}{t_{\text{monolithique}}} = 25\%
 \end{equation}
+
+Avec $t_{\text{monolithique}}$ le temps d'annotation d'une plaque
+pour le modèle monolithique.
 
 \subsection{Performances et Analyse}
 
@@ -142,15 +176,15 @@ mAP50 & 99.47\% \\
 \hline
 mAP50-95 & 74.01\% \\
 \hline
-Précision & 96.53\% \\
+Précision & 97.25\% \\
 \hline
 Rappel & 95.85\% \\
 \hline
-Temps d'inférence & 0.0402s \\
+\textbf{Score F1} & \textbf{97.06\%} \\
 \hline
-Prédictions confiantes & 92.54\% \\
+Temps d'inférence & 402ms \\
 \hline
-Précision des prédictions confiantes (> 92 \%) & 99.09\% \\
+Précision des prédictions confiantes (> 92 \%) & 99.21\% \\
 \hline
 \end{tabular}
 \end{center}
@@ -198,16 +232,20 @@ où $\mathcal{L}_{\text{CrossEntropy}}$ représente la fonction de perte d'entro
 Pour atteindre ces objectifs ambitieux, nous mettons en œuvre une stratégie multi-facettes :
 
 \begin{itemize}
-\item \textbf{Augmentation des données} : Collecte massive d'échantillons supplémentaires
-\item \textbf{Data augmentation avancée} : Techniques de génération synthétique
-\item \textbf{Optimisation d'architecture} : Fine-tuning des modèles actuels
-\item \textbf{Focus sur les classes faibles} : Augmenter les échantillons des classes faibles
-\item \textbf{Apprentissage par transfert} : Utilisation de modèles pré-entraînés
+\item \textbf{Augmentation des données} : Collecte massive d'échantillons supplémentaires.
+\item \textbf{Data augmentation avancée} : Techniques de génération synthétique.
+\item \textbf{Optimisation d'architecture} : Fine-tuning des modèles actuels.
+\item \textbf{Focus sur les classes faibles} : Augmenter les échantillons des classes faibles.
+\item \textbf{Apprentissage par transfert} : Utilisation de modèles pré-entraînés.
+\item \textbf{Optimisation du temps de calcul} : Essayer de diminuer de le temps de calcul
+au niveau de chaque module afin de pouvoir atteindre au moins 50 frames par seconde.
 \end{itemize}
 
 \subsection{Impact Attendu}
 
-L'atteinte de ces objectifs positionnera notre système parmi les solutions les plus performantes du marché, avec une fiabilité adaptée aux applications critiques nécessitant une précision extrême.
+L'atteinte de ces objectifs positionnera notre système parmi les solutions
+les plus performantes du marché, avec une fiabilité adaptée aux applications
+critiques nécessitant une précision extrême.
 
 \section{GLOSSAIRE DES MÉTRIQUES}
 
@@ -220,6 +258,7 @@ L'atteinte de ces objectifs positionnera notre système parmi les solutions les 
 \textbf{Exemple} : 96 prédictions correctes sur 100 → Exactitude = 96\%
 
 \subsection{Précision (Precision)}
+Parmi les prédictions positives, proportion de véritables positifs.
 
 \begin{equation}
 \text{Précision} = \frac{\text{Vrais Positifs}}{\text{Vrais Positifs + Faux Positifs}}
@@ -228,6 +267,7 @@ L'atteinte de ces objectifs positionnera notre système parmi les solutions les 
 \textbf{Exemple} : 85 véritables "A" parmi 90 prédictions "A" → Précision = 94.4\%
 
 \subsection{Rappel (Recall)}
+Parmi les véritables positifs, proportion correctement identifiée.
 
 \begin{equation}
 \text{Rappel} = \frac{\text{Vrais Positifs}}{\text{Vrais Positifs + Faux Négatifs}}
@@ -236,6 +276,7 @@ L'atteinte de ces objectifs positionnera notre système parmi les solutions les 
 \textbf{Exemple} : 92 "A" correctement identifiés sur 100 véritables "A" → Rappel = 92\%
 
 \subsection{Score F1}
+Moyenne harmonique entre précision et rappel.
 
 \begin{equation}
 \text{F1} = 2 \times \frac{\text{Précision} \times \text{Rappel}}{\text{Précision} + \text{Rappel}}
@@ -245,7 +286,9 @@ L'atteinte de ces objectifs positionnera notre système parmi les solutions les 
 
 \subsection{mAP (Mean Average Precision)}
 
-Moyenne des précisions sur différentes classes et seuils de confiance. Le mAP50 considère un chevauchement de 50\% entre les boîtes détectées et les vérités terrain.
+Moyenne des précisions sur différentes classes et seuils de confiance.
+Le mAP50 considère un chevauchement de 50\% entre les boîtes détectées
+et les vérités terrain.
 
 \subsection{CrossEntropyLoss}
 
@@ -257,11 +300,28 @@ Mesure l'erreur entre les distributions de probabilités prédites et réelles :
 
 où $y_i$ est la vérité terrain et $\hat{y}_i$ la prédiction.
 
+% \subsection{Le score de confience (Confidence)}
+% La confiance en apprentissage automatique (ML) désigne le degré de certitude
+% qu'un modèle attribue à sa propre prédiction. Elle est directement liée
+% à la distribution de probabilité prédite par le modèle :
+% la confiance est généralement représentée par la probabilité
+% la plus élevée dans cette distribution. Par exemple, si un modèle classifie
+% une image et produit la distribution [Chien: 0.9, Chat: 0.1], sa confiance
+% pour la classe "Chien" est de 90\%. Cette confiance augmente
+% lorsque l'on minimise fortement l'erreur d'entropie croisée.
+% En effet, cette fonction de coût pénalise davantage les grandes divergences
+% entre la distribution prédite et la vraie distribution
+% (généralement une distribution "one-hot" pour la classe cible).
+% En minimisant cette erreur, le modèle est poussé à attribuer une probabilité
+% proche de 1 à la classe correcte et proche de 0 aux autres,
+% ce qui a pour effet d'"aiguiser" la distribution de probabilité
+% et donc d'augmenter la valeur maximale, c'est-à-dire la confiance.
+
 \section{CONCLUSIONS}
 
 Notre recherche démontre la supériorité de l'architecture hybride pour la reconnaissance de plaques d'immatriculation. La séparation des tâches de détection et classification permet non seulement d'améliorer les performances métriques, mais aussi de réduire significativement les coûts de développement grâce à l'annotation simplifiée.
 
-L'approche hybride atteint une exactitude de 95.85\% avec une réduction de 75\% du temps d'annotation, tout en maintenant une infrastructure adaptable et évolutive. Les perspectives d'optimisation vers un F1-score de 99\% et une CrossEntropyLoss de $1 \times 10^{-3}$ positionnent cette solution comme compétitive pour des applications industrielles exigeantes.
+L'approche hybride atteint un score F1 de 97.25\% avec une réduction de 25\% du temps d'annotation, tout en maintenant une infrastructure adaptable et évolutive. Les perspectives d'optimisation vers un F1-score de 99\% et une CrossEntropyLoss de $1 \times 10^{-3}$ positionnent cette solution comme compétitive pour des applications industrielles exigeantes.
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
