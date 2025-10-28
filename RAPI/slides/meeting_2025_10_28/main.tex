@@ -27,7 +27,7 @@
 %	INFORMATIONS DE LA PRÉSENTATION
 %----------------------------------------------------------------------------------------
 
-\title[ALPR]{Reconnaissance Automatique des Plaques d'Immatriculation}
+\title[ALPR]{Rapport 2025-10-28 : Système de Reconnaissance Automatique des Plaques d'Immatriculation} % The short title in the optional parameter appears at the bottom of every slide, the full title in the main parameter is only on the title page
 \subtitle{Du Monolithique à l'Hybride : Une Évolution Stratégique}
 
 \author[Équipe IA]{Équipe de Recherche en Intelligence Artificielle}
@@ -71,16 +71,17 @@
 	\frametitle{Contexte et Enjeux}
 	
 	\begin{block}{Problématique}
-		La reconnaissance automatique de plaques d'immatriculation (ALPR) pose des défis majeurs :
+		La lecture des numéro de plaque d'immatriculation pose des défis majeurs :
 		\begin{itemize}
 			\item Variabilité des conditions d'éclairage
-			\item Diversité des angles de vue
-			\item Résolutions d'image variables
+			\item Diversité des angles de vue et des polices d'écriture
+			\item Résolutions d'image variables liée à celle de la caméra
+			de prise de vue
 			\item Formats de plaques différents
 		\end{itemize}
 	\end{block}
 	
-	\bigskip
+	% \bigskip
 	
 	\begin{exampleblock}{Notre Objectif}
 		Développer un système performant optimisant le compromis entre précision, coût et déploiement.
@@ -95,7 +96,7 @@
 
 \begin{frame}
 	\frametitle{Architecture Monolithique YOLOv11}
-	
+
 	\begin{columns}[c]
 		\begin{column}{0.5\textwidth}
 			\textbf{Caractéristiques principales :}
@@ -110,12 +111,13 @@
 		\begin{column}{0.5\textwidth}
 			\textbf{Formule de complexité :}
 			\begin{equation*}
-				T_{annotation} = n \times t_{car} \times c_{complex}
+				T_{annotation} = n \times t_{caracteres} \times c_{complex}
 			\end{equation*}
 			
 			\bigskip
 			
 			\alert{Limitation majeure :} Annotation très coûteuse en temps et ressources humaines
+			afin d'atteindre de bonne précision dans la classification des caractères.
 		\end{column}
 	\end{columns}
 \end{frame}
@@ -136,7 +138,7 @@
 			Précision & 94.97\% \\
 			Rappel & 92.23\% \\
 			\textbf{Score F1} & \textbf{93.58\%} \\
-			Temps d'inférence & 19.6 ms \\
+			Temps d'inférence & 333 ms \\
 			Précision (conf. > 92\%) & 83.54\% \\
 			\bottomrule
 		\end{tabular}
@@ -179,7 +181,7 @@
 	
 	\bigskip
 	
-	\textbf{Annotation 4 fois plus rapide !}
+	\textbf{Annotation plus rapide !}
 \end{frame}
 
 %------------------------------------------------
@@ -199,8 +201,8 @@
 					mAP50-95 & 74.01\% \\
 					Précision & 97.25\% \\
 					Rappel & 95.85\% \\
-					\textbf{F1} & \textbf{97.06\%} \\
-					Inférence & 402 ms \\
+					\textbf{Score F1} & \textbf{97.06\%} \\
+					Inférence & 587 ms \\
 					Conf. > 92\% & 99.21\% \\
 					\bottomrule
 				\end{tabular}
@@ -237,7 +239,7 @@
 			Score F1 & 93.58\% & \textcolor{green}{\textbf{97.06\%}} \\
 			mAP50 & 96.87\% & \textcolor{green}{\textbf{99.47\%}} \\
 			Précision (conf. > 92\%) & 83.54\% & \textcolor{green}{\textbf{99.21\%}} \\
-			Temps d'inférence & \textcolor{green}{\textbf{19.6 ms}} & 402 ms \\
+			Temps d'inférence & \textcolor{green}{\textbf{333 ms}} & 587 ms \\
 			Coût d'annotation & Élevé & \textcolor{green}{\textbf{-25\%}} \\
 			Flexibilité & Limitée & \textcolor{green}{\textbf{Élevée}} \\
 			\bottomrule
@@ -262,8 +264,8 @@
 			\begin{itemize}
 				\item Spécialisation des modules
 				\item Optimisation indépendante
-				\item Meilleure robustesse au bruit
 				\item Gestion améliorée des variations
+				(police de caractères, couleur des caractères, etc...)
 			\end{itemize}
 		\end{column}
 		
@@ -375,7 +377,7 @@
 		\begin{equation*}
 			\text{Rappel} = \frac{\text{Vrais Positifs}}{\text{Vrais Positifs + Faux Négatifs}}
 		\end{equation*}
-		Parmi les vrais positifs, quelle proportion est identifiée ?
+		Parmi les vrais positifs, quelle proportion est correctement prédicte ?
 	\end{block}
 \end{frame}
 
@@ -389,10 +391,8 @@
 		\begin{equation*}
 			\text{F1} = 2 \times \frac{\text{Précision} \times \text{Rappel}}{\text{Précision} + \text{Rappel}}
 		\end{equation*}
-		\textbf{Exemple :} Précision = 90\%, Rappel = 95\% → F1 = 92.4\%
+		\textbf{Exemple :} Précision = 90\%, Rappel = 95\% $\rightarrow$ F1 = 92.4\%
 	\end{block}
-	
-	\bigskip
 	
 	\begin{block}{Cross-Entropy Loss}
 		Mesure l'erreur entre distributions prédites et réelles :
@@ -401,6 +401,7 @@
 		\end{equation*}
 		Plus cette valeur est faible, meilleure est la confiance du modèle.
 	\end{block}
+	\bigskip
 \end{frame}
 
 %----------------------------------------------------------------------------------------
@@ -442,29 +443,29 @@
 \begin{frame}
 	\frametitle{Remerciements}
 	
-	\begin{columns}[t]
-		\begin{column}{0.45\textwidth}
-			\textbf{Équipe de Recherche}
-			\begin{itemize}
-				\item Architectures Deep Learning
-				\item Traitement d'images
-				\item Évaluation performances
-			\end{itemize}
-		\end{column}
+	% \begin{columns}[t]
+	% 	\begin{column}{0.45\textwidth}
+	% 		\textbf{Équipe de Recherche}
+	% 		\begin{itemize}
+	% 			\item Architectures Deep Learning
+	% 			\item Traitement d'images
+	% 			\item Évaluation performances
+	% 		\end{itemize}
+	% 	\end{column}
 		
-		\begin{column}{0.5\textwidth}
-			\textbf{Institution}
-			\begin{itemize}
-				\item UATM GASA FORMATION
-				\item Laboratoire de Recherche en IA
-			\end{itemize}
-		\end{column}
-	\end{columns}
+	% 	\begin{column}{0.5\textwidth}
+	% 		\textbf{Institution}
+	% 		\begin{itemize}
+	% 			\item UATM GASA FORMATION
+	% 			\item Laboratoire de Recherche en IA
+	% 		\end{itemize}
+	% 	\end{column}
+	% \end{columns}
 	
-	\bigskip\bigskip
+	% \bigskip\bigskip
 	
 	\centering
-	\textit{Merci pour votre attention !}
+	\textbf{Merci pour votre attention !}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
