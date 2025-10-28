@@ -277,6 +277,263 @@
 \end{frame}
 
 %----------------------------------------------------------------------------------------
+%	SYSTÈME DE CORRECTION DES PLAQUES
+%----------------------------------------------------------------------------------------
+
+\section{Système de Correction Intelligent}
+
+\begin{frame}
+	\frametitle{Problématique : Confusions Visuelles}
+	\framesubtitle{Lettres et Chiffres Similaires}
+	
+	\begin{alertblock}{Le Problème}
+		Le modèle IA peut confondre des caractères visuellement similaires
+	\end{alertblock}
+	
+	\smallskip
+	
+	\begin{exampleblock}{Exemple Concret}
+		\textbf{Plaque réelle :} \texttt{BN0684}
+		
+		\textbf{Détection IA :} \texttt{8N06BA}
+		
+		\smallskip
+		
+		\textbf{Confusions identifiées :}
+		\begin{itemize}
+			\item \texttt{B} confondu avec \texttt{8}
+			\item \texttt{4} confondu avec \texttt{A}
+		\end{itemize}
+	\end{exampleblock}
+	
+	\smallskip
+	
+	\begin{block}{Solution}
+		\centering
+		\alert{Correcteur automatique} basé sur les conventions béninoises
+	\end{block}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Conventions des Plaques au Bénin}
+	\framesubtitle{Formats Standards}
+	
+	\begin{columns}[t]
+		\begin{column}{0.48\textwidth}
+			\begin{block}{Motos}
+				\textbf{Format 1 :}
+				\begin{itemize}
+					\item 1 chiffre
+					\item 2 lettres
+					\item 4 chiffres
+				\end{itemize}
+				\centering
+				\texttt{1AB2345}
+				
+				\smallskip
+				
+				\textbf{Format 2 :}
+				\begin{itemize}
+					\item 1 chiffre
+					\item 1 lettre
+					\item 4 chiffres
+				\end{itemize}
+				\centering
+				\texttt{1A2345}
+			\end{block}
+		\end{column}
+		
+		\begin{column}{0.48\textwidth}
+			\begin{block}{Voitures}
+				\textbf{Format 1 :}
+				\begin{itemize}
+					\item 2 lettres
+					\item 4 chiffres
+				\end{itemize}
+				\centering
+				\texttt{AB1234}
+				
+				\smallskip
+				
+				\textbf{Format 2 :}
+				\begin{itemize}
+					\item 1 lettre
+					\item 4 chiffres
+				\end{itemize}
+				\centering
+				\texttt{A1234}
+			\end{block}
+		\end{column}
+	\end{columns}
+	
+	\bigskip
+	
+	\begin{alertblock}{Base du système de correction}
+		Ces conventions permettent de déterminer si un caractère devrait être une lettre ou un chiffre
+	\end{alertblock}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Algorithme de Correction (1/2)}
+	\framesubtitle{Table de Confusion}
+	
+	\begin{block}{Composants du Système}
+		\begin{itemize}
+			\item \textbf{chiffre\_db} : Base de données des chiffres (0-9)
+			\item \textbf{lettre\_db} : Base de données des lettres (A-Z)
+			\item \textbf{table\_confusion} : Dictionnaire des correspondances
+		\end{itemize}
+	\end{block}
+	
+	\smallskip
+	
+	\begin{exampleblock}{Table de Confusion (Exemples)}
+		\small
+		\begin{tabular}{ccccccccc}
+			\texttt{0 $\rightarrow$ O/D} & \texttt{1 $\rightarrow$ I} & \texttt{2 $\rightarrow$ Z} & \texttt{5$\rightarrow$S} & \texttt{6$\rightarrow$G} & \texttt{7$\rightarrow$T} & \texttt{8$\rightarrow$B} & ...
+		\end{tabular}
+	\end{exampleblock}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Algorithme de Correction (2/2)}
+	\framesubtitle{Logique de Traitement}
+	
+	\begin{block}{Processus de Correction}
+		\begin{enumerate}
+			\item Vérifier le nombre de caractères détectés
+			\item Comparer avec le format attendu (moto/voiture)
+			\item Si confusion détectée : consulter la table et corriger
+			\item Si caractères en excès : supprimer le surplus
+		\end{enumerate}
+	\end{block}
+\end{frame}
+
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Logique de Correction : Étapes Détaillées}
+	
+	\begin{block}{Étape 1 : Validation du Format}
+		\begin{itemize}
+			\item Vérifier que le nombre de caractères correspond aux conventions
+			\item Identifier le type de véhicule (moto ou voiture)
+		\end{itemize}
+	\end{block}
+	
+	\smallskip
+	
+	\begin{block}{Étape 2 : Correction Position par Position}
+		Pour chaque position dans la plaque :
+		\begin{itemize}
+			\item \textbf{Si lettre attendue + chiffre détecté} $\rightarrow$ Remplacer par lettre correspondante
+			\item \textbf{Si chiffre attendu + lettre détectée} $\rightarrow$ Remplacer par chiffre correspondant
+		\end{itemize}
+	\end{block}
+	
+	\smallskip
+	
+	\begin{alertblock}{Gestion des Cas Particuliers}
+		\begin{itemize}
+			\item Caractères en excès : Suppression automatique
+			\item Format non conforme : Tentative de reconstruction
+		\end{itemize}
+	\end{alertblock}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Exemple de Correction en Action}
+	\framesubtitle{Cas d'une Voiture}
+	
+	\begin{columns}[c]
+		\begin{column}{0.48\textwidth}
+			\begin{block}{Détection Brute}
+				\Large
+				\centering
+				\texttt{8N06BA}
+				
+				\normalsize
+				\bigskip
+				
+				\textbf{Problèmes :}
+				\begin{itemize}
+					\item Position 1 : \textcolor{red}{\texttt{8}} (chiffre)
+					\item Position 5 : \textcolor{red}{\texttt{B}} (lettre)
+					\item Position 6 : \textcolor{red}{\texttt{A}} (lettre)
+				\end{itemize}
+			\end{block}
+		\end{column}
+		
+		\begin{column}{0.48\textwidth}
+			\begin{exampleblock}{Après Correction}
+				\Large
+				\centering
+				\textcolor{green}{\texttt{BN0684}}
+				
+				\normalsize
+				\bigskip
+				
+				\textbf{Corrections :}
+				\begin{itemize}
+					\item \texttt{8} $\rightarrow$ \textcolor{green}{\texttt{B}} (lettre)
+					\item \texttt{B} $\rightarrow$ \textcolor{green}{\texttt{8}} (chiffre)
+					\item \texttt{A} $\rightarrow$ \textcolor{green}{\texttt{4}} (chiffre)
+				\end{itemize}
+			\end{exampleblock}
+		\end{column}
+	\end{columns}
+	
+	\smallskip
+	
+	\begin{block}{Format Respecté}
+		\centering
+		Voiture : \texttt{[Lettre][Lettre][Chiffre][Chiffre][Chiffre][Chiffre]}
+	\end{block}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Impact et Bénéfices du Correcteur}
+	
+	\begin{exampleblock}{Amélioration de la Précision}
+		\begin{itemize}
+			\item Correction automatique des confusions visuelles
+			\item Respect strict des conventions béninoises
+			\item Réduction des faux positifs
+		\end{itemize}
+	\end{exampleblock}
+	
+	\smallskip
+	
+	\begin{block}{Avantages Opérationnels}
+		\begin{itemize}
+			\item \textbf{Robustesse} : Gère les erreurs de détection courantes
+			\item \textbf{Adaptabilité} : Facile d'ajouter de nouvelles règles
+			\item \textbf{Traçabilité} : Possibilité de logger les corrections
+		\end{itemize}
+	\end{block}
+	
+	\smallskip
+	
+	\begin{alertblock}{Résultat}
+		\centering
+		Le correcteur améliore significativement la fiabilité du système
+		en transformant les détections ambiguës en résultats conformes
+	\end{alertblock}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
 %	CONDITIONS DE FONCTIONNEMENT
 %----------------------------------------------------------------------------------------
 
@@ -474,6 +731,8 @@
 	\alert{Évolution majeure de l'ensemble de la plateforme}
 \end{frame}
 
+
+
 %----------------------------------------------------------------------------------------
 %	CONCLUSION
 %----------------------------------------------------------------------------------------
@@ -487,6 +746,8 @@
 			\item Architecture backend optimisée et flexible
 			\item Interface utilisateur intuitive et performante
 			\item Support multiplateforme (Web + Android) pour les testes manuels
+			\item Système de Correction Intelligent pour la résolution
+			des confusions Visuelles
 		\end{itemize}
 	\end{block}
 	
