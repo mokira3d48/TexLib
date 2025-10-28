@@ -109,7 +109,7 @@
 				\textbf{Visualiseur d'images}
 				\begin{itemize}
 					\item Zoom avant/arrière
-					\item Navigation entre images
+					\item Navigation sur images
 					\item Inspection détaillée des résultats
 				\end{itemize}
 			\end{block}
@@ -151,7 +151,7 @@
 		\begin{itemize}
 			\item Performance de l'interface
 			\item Expérience utilisateur (UX)
-			\item Accessibilité (normes WCAG)
+			\item Meilleur accessibilité
 		\end{itemize}
 	\end{exampleblock}
 \end{frame}
@@ -191,29 +191,17 @@
 	\frametitle{Mise à Niveau de l'Application Android}
 	
 	\begin{block}{Évolutions majeures}
-		\begin{enumerate}
-			\item \textbf{Synchronisation avec le Backend}
-			\begin{itemize}
-				\item Adaptation aux nouvelles fonctionnalités du serveur
-				\item Exploitation des endpoints atomiques
-			\end{itemize}
-			
-			\bigskip
-			
-			\item \textbf{Optimisation de l'envoi d'images}
-			\begin{itemize}
-				\item Nouvelle méthode de transmission vers le serveur
-				\item Version web de l'application Android mise à jour
-				\item Amélioration de la fiabilité et de la vitesse
-			\end{itemize}
-		\end{enumerate}
+		\begin{itemize}
+			\item Adaptation aux nouvelles fonctionnalités du serveur
+			\item Version web de l'application Android mise à jour
+		\end{itemize}
 	\end{block}
 	
-	\bigskip
+	% \bigskip
 	
-	\begin{alertblock}{Résultat}
-		Application mobile plus performante et alignée avec le Backend
-	\end{alertblock}
+	% \begin{alertblock}{Résultat}
+	% 	Application mobile plus performante et alignée avec le Backend
+	% \end{alertblock}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
@@ -238,9 +226,11 @@
 	
 	\begin{exampleblock}{Avantages de l'approche atomique}
 		\begin{itemize}
-			\item \textbf{Granularité} : Exécution de fonctionnalités spécifiques sans le pipeline complet
+			\item \textbf{Granularité} : Exécution de fonctionnalités spécifiques
+			sans le pipeline complet
 			\item \textbf{Performance} : Réduction des appels inutiles
-			\item \textbf{Flexibilité} : Frontend peut composer ses propres workflows
+			\item \textbf{Flexibilité} : Le frontend peut composer ses propres
+			workflows
 			\item \textbf{Scalabilité} : Meilleure gestion de la charge serveur
 			et facilité d'intégration de nouvelles endpoints
 		\end{itemize}
@@ -290,8 +280,18 @@
 		Le modèle IA peut confondre des caractères visuellement similaires
 	\end{alertblock}
 	
-	\smallskip
-	
+	\begin{block}{Solution}
+		\centering
+		\alert{Correcteur automatique} basé sur les conventions béninoises
+	\end{block}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+	\frametitle{Problématique : Confusions Visuelles}
+	\framesubtitle{Exemple de confusion}
+
 	\begin{exampleblock}{Exemple Concret}
 		\textbf{Plaque réelle :} \texttt{BN0684}
 		
@@ -302,16 +302,11 @@
 		\textbf{Confusions identifiées :}
 		\begin{itemize}
 			\item \texttt{B} confondu avec \texttt{8}
+			\item \texttt{8} confondu avec \texttt{B}
 			\item \texttt{4} confondu avec \texttt{A}
 		\end{itemize}
 	\end{exampleblock}
 	
-	\smallskip
-	
-	\begin{block}{Solution}
-		\centering
-		\alert{Correcteur automatique} basé sur les conventions béninoises
-	\end{block}
 \end{frame}
 
 %------------------------------------------------
@@ -722,7 +717,7 @@
 			Qualité d'image & Brute & \textcolor{green}{Corrigée} \\
 			Visualisation & Basique & \textcolor{green}{Avancée + Zoom} \\
 			Confiance IA & Non visible & \textcolor{green}{Couleurs} \\
-			Support Audio & Non & \textcolor{green}{Oui} \\
+			% Support Audio & Pas d'appréciation & \textcolor{green}{Ap} \\
 			Sécurité API & Basique & \textcolor{orange}{JWT (prévu)} \\
 			\bottomrule
 		\end{tabular}
