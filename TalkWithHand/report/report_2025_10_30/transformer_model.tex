@@ -1,0 +1,3101 @@
+\documentclass[12pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{transformer\_model}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % % prompt
+    % \makeatletter
+    % mmand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    % \makeatother
+    % \newcommand{\prompt}[4]{
+    %     {{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    % }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+
+    
+    
+
+    
+    \section{Encodeur de la langue des
+signes}\label{encodeur-de-la-langue-des-signes}
+
+Le \texttt{TransformerEncoder} constitue le \textbf{cœur de l'analyse
+séquentielle} du système de traduction de langue des signes. Son rôle
+principal est de transformer une séquence brute de caractéristiques
+gestuelles (issues de MediaPipe) en représentations contextuelles riches
+qui capturent les dépendances temporelles complexes de la langue des
+signes.
+
+\textbf{1. Projection des Entrées (\texttt{input\_projection})} -
+\textbf{Fonction} : Adapte la dimension des features d'entrée (126D pour
+MediaPipe) à la dimension du modèle (\texttt{d\_model}) -
+\textbf{Opération mathématique} : Transformation linéaire \(Wx + b\) où
+\(W \in \mathbb{R}^{d_{model} \times input\_dim}\) - \textbf{Utilité} :
+Uniformise l'espace de représentation pour les étapes suivantes
+
+\textbf{2. Encodage Positionnel (\texttt{pos\_encoding})} -
+\textbf{Problème résolu} : Les Transformers n'ont pas de notion innée de
+l'ordre séquentiel - \textbf{Solution} : l'Encodage Positionnel ajoute
+des informations temporelles via des fonctions sinus/cosinus. -
+\textbf{Formule} :
+\[PE(pos, 2i) = \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right)\]
+\[PE(pos, 2i+1) = \cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)\] -
+\textbf{Importance} : Cela permet au modèle de distinguer la position
+temporelle de chaque frame dans la séquence vidéo.
+
+\textbf{3. Régularisation (\texttt{dropout})} - \textbf{But} : Prévenir
+le surapprentissage pendant l'entraînement. - \textbf{Mécanisme} :
+Désactive aléatoirement une fraction des neurones. - \textbf{Impact} :
+Améliore l'apprentissage du modèle.
+
+\textbf{4. Pile de Couches Encodeur (\texttt{layers})} -
+\textbf{Composition} : Empilement de \texttt{num\_layers} couches
+identiques. - \textbf{Pour chaque couche} : nous avons - Mécanisme
+d'auto-attention multi-têtes. - Réseau feed-forward position-wise. -
+Connexions résiduelles et normalisation de couche. - \textbf{Évolution}
+: Chaque couche affine les représentations en capturant des dépendances
+de plus en plus complexes.
+
+\textbf{5. Normalisation Finale (\texttt{norm})} - \textbf{Fonction} :
+Stabilise les activations et accélère la convergence - \textbf{Bénéfice}
+: Réduit la sensibilité aux initialisations et aux hyperparamètres
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{math}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{random}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{time}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{tm}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{typing}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{\PYZus{}t}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{logging}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{dataclasses}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{dataclass}
+
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{torch}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{nn}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{nn}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{nn}\PY{n+nn}{.}\PY{n+nn}{functional}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{F}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{torchinfo}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{summary}
+
+\PY{c+c1}{\PYZsh{} Set up logging:}
+\PY{n}{logging}\PY{o}{.}\PY{n}{basicConfig}\PY{p}{(}
+    \PY{n}{level}\PY{o}{=}\PY{n}{logging}\PY{o}{.}\PY{n}{INFO}\PY{p}{,}
+    \PY{n+nb}{format}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}(asctime)s}\PY{l+s+s1}{ \PYZhy{} \PYZhy{} }\PY{l+s+si}{\PYZpc{}(levelname)s}\PY{l+s+s1}{ \PYZhy{} }\PY{l+s+si}{\PYZpc{}(message)s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{handlers}\PY{o}{=}\PY{p}{[}
+        \PY{n}{logging}\PY{o}{.}\PY{n}{FileHandler}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{train\PYZus{}transformer.log}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,}
+        \PY{n}{logging}\PY{o}{.}\PY{n}{StreamHandler}\PY{p}{(}\PY{p}{)}
+        \PY{p}{]}
+    \PY{p}{)}
+\PY{n}{LOGGER} \PY{o}{=} \PY{n}{logging}\PY{o}{.}\PY{n}{getLogger}\PY{p}{(}\PY{n+nv+vm}{\PYZus{}\PYZus{}name\PYZus{}\PYZus{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{TransformerEncoder}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Complete Transformer Encoder.}
+
+\PY{l+s+sd}{    This module implements the full encoder stack of the Transformer model.}
+\PY{l+s+sd}{    It takes input sequences of landmark features and produces encoded}
+\PY{l+s+sd}{    representations that capture contextual information.}
+
+\PY{l+s+sd}{    :param input\PYZus{}dim: Dimension of input features (C from (B, T, C)).}
+\PY{l+s+sd}{    :param d\PYZus{}model: Dimension of the model (embedding size).}
+\PY{l+s+sd}{    :param num\PYZus{}heads: Number of attention heads.}
+\PY{l+s+sd}{    :param num\PYZus{}layers: Number of encoder layers.}
+\PY{l+s+sd}{    :param d\PYZus{}ff: Dimension of feed\PYZhy{}forward network hidden layer.}
+\PY{l+s+sd}{    :param dropout: Dropout rate, defaults to 0.1.}
+\PY{l+s+sd}{    :param max\PYZus{}seq\PYZus{}len: Maximum sequence length for positional encoding,}
+\PY{l+s+sd}{      defaults to 5000.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{input\PYZus{}dim}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{d\PYZus{}model}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{num\PYZus{}heads}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{num\PYZus{}layers}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{d\PYZus{}ff}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{dropout}\PY{p}{:} \PY{n+nb}{float}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{p}{,}
+        \PY{n}{max\PYZus{}seq\PYZus{}len}\PY{p}{:} \PY{n+nb}{int}\PY{o}{=}\PY{l+m+mi}{250}
+    \PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{k+kc}{None}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Initialize TransformerEncoder module.\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Project input features to model dimension}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}projection} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{input\PYZus{}dim}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Positional encoding}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{pos\PYZus{}encoding} \PY{o}{=} \PY{n}{PositionalEncoding}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{max\PYZus{}seq\PYZus{}len}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Dropout for input embeddings}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{n}{dropout}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Stack of encoder layers}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{layers} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{ModuleList}\PY{p}{(}\PY{p}{[}
+            \PY{n}{EncoderLayer}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{num\PYZus{}heads}\PY{p}{,} \PY{n}{d\PYZus{}ff}\PY{p}{,} \PY{n}{dropout}\PY{p}{)}
+            \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}layers}\PY{p}{)}
+            \PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Final layer norm}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{LayerNorm}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{)}
+
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf}{forward}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{x}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{,}
+        \PY{n}{mask}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{o}{=}\PY{k+kc}{None}
+    \PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{        Forward pass of Transformer encoder.}
+
+\PY{l+s+sd}{        :param x: Input tensor of shape (B, T, C) where B is batch size,}
+\PY{l+s+sd}{          T is sequence length (number of frames), C is feature dimension.}
+\PY{l+s+sd}{        :param mask: Optional mask tensor for attention, defaults to None.}
+\PY{l+s+sd}{        :returns: Encoded representations of shape (B, T, d\PYZus{}model).}
+
+\PY{l+s+sd}{        :raises ValueError: If input tensor does not have 3 dimensions.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{c+c1}{\PYZsh{} Validate input shape}
+        \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{)} \PY{o}{!=} \PY{l+m+mi}{3}\PY{p}{:}
+            \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}
+                \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Input must have 3 dimensions (B, T, C), got }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+            \PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Project input to model dimension}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}projection}\PY{p}{(}\PY{n}{x}\PY{p}{)}  \PY{c+c1}{\PYZsh{} (B, T, d\PYZus{}model)}
+        \PY{c+c1}{\PYZsh{} Add positional encoding and apply dropout}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{pos\PYZus{}encoding}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Pass through each encoder layer}
+        \PY{k}{for} \PY{n}{layer} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{layers}\PY{p}{:}
+            \PY{n}{x} \PY{o}{=} \PY{n}{layer}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{mask}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Apply final layer norm}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{k}{return} \PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Flux de Données (Forward
+Pass)}\label{flux-de-donnuxe9es-forward-pass}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Étape 1 : Validation et Préparation}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Vérification que l'entrée a la forme
+  \texttt{(batch\_size,\ sequence\_length,\ feature\_dim)}
+\item
+  Contrôle que la longueur de séquence ne dépasse pas
+  \texttt{max\_seq\_len}
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Étape 2 : Projection Linéaire} Prenoons par exemple, la
+  séquence ``BONJOUR'' en langue des signes
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Frame 0} : Mains en position de départ
+\item
+  \textbf{Frame 1} : Début du mouvement vers le front
+\item
+  \textbf{Frame 2} : Mains au front (point culminant du geste)
+\item
+  \textbf{Frame 3} : Retour vers la position neutre
+\end{itemize}
+
+Chaque frame a des coordonnées de mains :
+
+\begin{verbatim}
+Frame 0: [x1,y1,z1, x2,y2,z2, ...]  # 126 valeurs
+Frame 1: [x1,y1,z1, x2,y2,z2, ...]  # 126 valeurs  
+Frame 2: [x1,y1,z1, x2,y2,z2, ...]  # 126 valeurs
+Frame 3: [x1,y1,z1, x2,y2,z2, ...]  # 126 valeurs
+\end{verbatim}
+
+La dimension de la matrice d'entrée est donc : $ \text{dim}(x) = B
+\times T \times 126 $. La projection linéaire réalise l'opération de
+projection suivante:
+
+\[
+Wx + b
+\]
+
+où \(W \in \mathbb{R}^{d_{model} \times input\_dim}\)
+
+Ce qui change la dimension de la matrice.
+
+\begin{verbatim}
+(B, T, 126) ---> (B, T, d_model)
+\end{verbatim}
+
+Les coordonnées MediaPipe brutes sont projetées dans un espace de
+dimension supérieure plus expressif.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Étape 3 : Enrichissement Temporel}
+\end{enumerate}
+
+\begin{verbatim}
+Features projetées + Encodage positionnel → Représentations temporelles
+\end{verbatim}
+
+Chaque frame reçoit une ``signature temporelle'' unique.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \textbf{Étape 4 : Transformation Contextuelle}
+\end{enumerate}
+
+\begin{verbatim}
+Représentations temporelles → [Couche 1] → [Couche 2] → ... → [Couche N]
+\end{verbatim}
+
+Chaque couche d'encodeur : 1. \textbf{Auto-attention} : Chaque position
+``regarde'' toutes les autres positions 2. \textbf{Combinaison} : Agrège
+l'information contextuelle 3. \textbf{Transformation non-linéaire} :
+Applique des transformations complexes via le FFN
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  \textbf{Étape 5 : Normalisation et Sortie}
+\end{enumerate}
+
+\begin{verbatim}
+Sortie finale normalisée de forme (B, T, d_model)
+\end{verbatim}
+
+    \subsection{Rôle Fondamental de l'Encodage
+Positionnel}\label{ruxf4le-fondamental-de-lencodage-positionnel}
+
+Les Transformers, par leur nature, traitent toutes les positions de la
+séquence \textbf{simultanément} et \textbf{sans ordre prédéfini}.
+Contrairement aux RNN/LSTM qui traitent les séquences séquentiellement
+et donc ``connaissent'' naturellement l'ordre, les Transformers sont
+agnostiques à la position des éléments dans la séquence.
+
+**Imaginer que vous regarder une vidéo de langue des signes où quelqu'un
+signe ``JE T'AIME''. Sans encodage positionnel, le Transformer verrait
+ça comme :
+
+\begin{verbatim}
+[Frame1, Frame2, Frame3] = [JE, T', AIME]
+\end{verbatim}
+
+Mais il pourrait aussi penser que c'est :
+
+\begin{verbatim}
+[Frame3, Frame1, Frame2] = [AIME, JE, T']
+\end{verbatim}
+
+\textbf{Résultat} : le modèle ne pourrait faire aucune distinction entre
+``AIME JE T''' et ``JE T'AIME'' !\\
+C'est pourquoi on doit dire au modèle : ``Frame1 vient en premier,
+Frame2 en deuxième, Frame3 en troisième''.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{PositionalEncoding}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Positional encoding for Transformer models.}
+
+\PY{l+s+sd}{    This module adds positional information to the input embeddings}
+\PY{l+s+sd}{    using sine and cosine functions of different frequencies.}
+
+\PY{l+s+sd}{    :param d\PYZus{}model: The dimension of the embeddings.}
+\PY{l+s+sd}{    :param max\PYZus{}len: Maximum sequence length, defaults to 5000.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,} \PY{n}{max\PYZus{}len}\PY{p}{:} \PY{n+nb}{int}\PY{o}{=}\PY{l+m+mi}{5000}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{k+kc}{None}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Initialize PositionalEncoding module.\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Create positional encoding matrix}
+        \PY{n}{pe} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{max\PYZus{}len}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Position indices [0, 1, 2, ..., max\PYZus{}len\PYZhy{}1]}
+        \PY{n}{position} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{max\PYZus{}len}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{torch}\PY{o}{.}\PY{n}{float}\PY{p}{)}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Division term for frequency calculation}
+        \PY{n}{div\PYZus{}term} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{torch}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{o}{.}\PY{n}{float}\PY{p}{(}\PY{p}{)}
+            \PY{o}{*} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{math}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{l+m+mf}{10000.0}\PY{p}{)} \PY{o}{/} \PY{n}{d\PYZus{}model}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Apply sine to even indices}
+        \PY{n}{pe}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{:}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{position} \PY{o}{*} \PY{n}{div\PYZus{}term}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Apply cosine to odd indices}
+        \PY{n}{pe}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{:}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{cos}\PY{p}{(}\PY{n}{position} \PY{o}{*} \PY{n}{div\PYZus{}term}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Add batch dimension: (1, max\PYZus{}len, d\PYZus{}model)}
+        \PY{n}{pe} \PY{o}{=} \PY{n}{pe}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Register as buffer (not a parameter)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{register\PYZus{}buffer}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{pe}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{pe}\PY{p}{)}
+
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{        Add positional encoding to input tensor.}
+
+\PY{l+s+sd}{        :param x: Input tensor of shape (B, T, C).}
+\PY{l+s+sd}{        :returns: Output tensor with positional encoding added.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{c+c1}{\PYZsh{} Get the feature dimension of input}
+        \PY{n}{input\PYZus{}feature\PYZus{}dim} \PY{o}{=} \PY{n}{x}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{pe\PYZus{}feature\PYZus{}dim} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{pe}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Check if dimensions match:}
+        \PY{k}{if} \PY{n}{input\PYZus{}feature\PYZus{}dim} \PY{o}{!=} \PY{n}{pe\PYZus{}feature\PYZus{}dim}\PY{p}{:}
+            \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}
+                \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Feature dimension mismatch: input has }\PY{l+s+si}{\PYZob{}}\PY{n}{input\PYZus{}feature\PYZus{}dim}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}
+                \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{features, but positional encoding has }\PY{l+s+si}{\PYZob{}}\PY{n}{pe\PYZus{}feature\PYZus{}dim}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}
+                \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{features. Make sure your input projection matches }\PY{l+s+s2}{\PYZdq{}}
+                \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{the `d\PYZus{}model` used in PositionalEncoding.}\PY{l+s+s2}{\PYZdq{}}
+            \PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Add positional encoding to input}
+        \PY{c+c1}{\PYZsh{} pe is sliced to match sequence length T.}
+        \PY{k}{return} \PY{n}{x} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{pe}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{n}{x}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \textbf{Autre exemple avec une Phrase Complète}
+
+\textbf{Séquence} : ``JE VAIS BIEN'' (3 signes sur 9 frames)
+
+\begin{verbatim}
+Frames 0-2: Signe "JE"     → Encodages [PE0, PE1, PE2]
+Frames 3-5: Signe "VAIS"   → Encodages [PE3, PE4, PE5]  
+Frames 6-8: Signe "BIEN"   → Encodages [PE6, PE7, PE8]
+\end{verbatim}
+
+\textbf{Le Transformer apprend} : - Les patterns
+\texttt{{[}PE0,\ PE1,\ PE2{]}} correspondent souvent au mot ``JE'' -
+\texttt{{[}PE3,\ PE4,\ PE5{]}} correspondent à ``VAIS''\\
+- \texttt{{[}PE6,\ PE7,\ PE8{]}} correspondent à ``BIEN'' - La séquence
+complète \texttt{{[}PE0...PE8{]}} signifie ``JE VAIS BIEN''
+
+\textbf{Voici une autre analogie dans la musique}
+
+\textbf{Imaginer} que chaque frame de votre vidéo est un musicien dans
+un orchestre :
+
+\begin{itemize}
+\tightlist
+\item
+  Sans encodage positionnel, tous les musiciens joueraient en même
+  temps, ce qui conduirait à une vraie \textbf{cacophonie} !\\
+\item
+  Avec encodage positionnel, chacun joue au bon moment ce qui donnerait
+  une \textbf{belle symphonie} !
+\end{itemize}
+
+    \subsection{Mécanisme
+d'Auto-Attention}\label{muxe9canisme-dauto-attention}
+
+\textbf{Imaginer} que vous regarder un interprète en langue des signes
+traduire ``JE VAIS À LA MAISON''. Votre cerveau ne regarde pas toutes
+les parties du corps en même temps avec la même intensité. Au lieu de
+cela :
+
+\begin{itemize}
+\tightlist
+\item
+  Quand il signe ``JE'', vous \textbf{focalisez} sur la poitrine.
+\item
+  Pour ``MAISON'', vos yeux \textbf{se déplacent} vers la forme des
+  mains qui dessinent un toit.
+\item
+  Pendant ``ALLER'', vous \textbf{suivez} le mouvement des bras.
+\end{itemize}
+
+C'est exactement ce que fait le mécanisme d'\textbf{attention
+multi-têtes} ! Il permet à ton modèle de ``regarder'' différentes
+parties de la séquence vidéo avec différentes ``intensités'' selon ce
+qu'il veut traduire.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{MultiHeadAttention}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Multi\PYZhy{}head auto and cross\PYZhy{}attention mechanism.}
+
+\PY{l+s+sd}{    This module computes multi\PYZhy{}head attention where the query comes}
+\PY{l+s+sd}{    from one sequence and the keys/values come from another sequence}
+\PY{l+s+sd}{    (encoder outputs).}
+
+\PY{l+s+sd}{    :param d\PYZus{}model: The dimension of the input and output features.}
+\PY{l+s+sd}{    :param num\PYZus{}heads: The number of attention heads.}
+\PY{l+s+sd}{    :param dropout: Dropout rate for attention weights, defaults to 0.1.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{d\PYZus{}model}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{num\PYZus{}heads}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{dropout}\PY{p}{:} \PY{n+nb}{float}\PY{o}{=}\PY{l+m+mf}{0.1}
+    \PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{k+kc}{None}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Initialize MultiHeadCrossAttention module.\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Validate that d\PYZus{}model is divisible by num\PYZus{}heads}
+        \PY{k}{if} \PY{n}{d\PYZus{}model} \PY{o}{\PYZpc{}} \PY{n}{num\PYZus{}heads} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{d\PYZus{}model must be divisible by num\PYZus{}heads.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d\PYZus{}model} \PY{o}{=} \PY{n}{d\PYZus{}model}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{num\PYZus{}heads} \PY{o}{=} \PY{n}{num\PYZus{}heads}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d\PYZus{}k} \PY{o}{=} \PY{n}{d\PYZus{}model} \PY{o}{/}\PY{o}{/} \PY{n}{num\PYZus{}heads}  \PY{c+c1}{\PYZsh{} Dimension of each head}
+
+        \PY{c+c1}{\PYZsh{} Linear projections for Query, Key, Value}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{w\PYZus{}q} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{bias}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Query from decoder}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{w\PYZus{}k} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{bias}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Key from encoder}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{w\PYZus{}v} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{bias}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Value from encoder}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{w\PYZus{}o} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Output projection}
+
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{n}{dropout}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{scale} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d\PYZus{}k}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Scaling factor for stability}
+
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf}{forward}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{query}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{,}
+        \PY{n}{key}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{,}
+        \PY{n}{value}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{,}
+        \PY{n}{mask}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor} \PY{o}{=} \PY{k+kc}{None}
+    \PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{        Forward pass of multi\PYZhy{}head cross\PYZhy{}attention.}
+
+\PY{l+s+sd}{        :param query: Query tensor from decoder of shape (B, T\PYZus{}dec, C).}
+\PY{l+s+sd}{        :param key: Key tensor from encoder of shape (B, T\PYZus{}enc, C).}
+\PY{l+s+sd}{        :param value: Value tensor from encoder of shape (B, T\PYZus{}enc, C).}
+\PY{l+s+sd}{        :param mask: Optional mask tensor for attention, defaults to None.}
+\PY{l+s+sd}{        :returns: Output tensor of shape (B, T\PYZus{}dec, C).}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{t\PYZus{}dec}\PY{p}{,} \PY{n}{d\PYZus{}model} \PY{o}{=} \PY{n}{query}\PY{o}{.}\PY{n}{shape}
+        \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{t\PYZus{}enc}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{key}\PY{o}{.}\PY{n}{shape}
+
+        \PY{c+c1}{\PYZsh{} Linear projections and reshape for multi\PYZhy{}head attention}
+        \PY{c+c1}{\PYZsh{} Query from decoder: (B, num\PYZus{}heads, T\PYZus{}dec, d\PYZus{}k)}
+        \PY{n}{Q} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{w\PYZus{}q}\PY{p}{(}\PY{n}{query}\PY{p}{)} \PYZbs{}
+            \PY{o}{.}\PY{n}{view}\PY{p}{(}\PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{t\PYZus{}dec}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{num\PYZus{}heads}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d\PYZus{}k}\PY{p}{)} \PYZbs{}
+            \PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Key from encoder: (B, num\PYZus{}heads, T\PYZus{}enc, d\PYZus{}k)}
+        \PY{n}{K} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{w\PYZus{}k}\PY{p}{(}\PY{n}{key}\PY{p}{)} \PYZbs{}
+            \PY{o}{.}\PY{n}{view}\PY{p}{(}\PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{t\PYZus{}enc}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{num\PYZus{}heads}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d\PYZus{}k}\PY{p}{)} \PYZbs{}
+            \PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Value from encoder: (B, num\PYZus{}heads, T\PYZus{}enc, d\PYZus{}k)}
+        \PY{n}{V} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{w\PYZus{}v}\PY{p}{(}\PY{n}{value}\PY{p}{)} \PYZbs{}
+            \PY{o}{.}\PY{n}{view}\PY{p}{(}\PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{t\PYZus{}enc}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{num\PYZus{}heads}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{d\PYZus{}k}\PY{p}{)} \PYZbs{}
+            \PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Compute attention scores: (B, num\PYZus{}heads, T\PYZus{}dec, T\PYZus{}enc)}
+        \PY{n}{scores} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{matmul}\PY{p}{(}\PY{n}{Q}\PY{p}{,} \PY{n}{K}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{scale}
+        \PY{c+c1}{\PYZsh{} Apply mask if provided (for padding or other masks)}
+        \PY{k}{if} \PY{n}{mask} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Mask should have shape (B, T\PYZus{}dec, T\PYZus{}enc) or broadcastable shape}
+            \PY{n}{scores} \PY{o}{=} \PY{n}{scores}\PY{o}{.}\PY{n}{masked\PYZus{}fill}\PY{p}{(}\PY{n}{mask} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1e9}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Apply softmax to get attention weights}
+        \PY{n}{attn\PYZus{}weights} \PY{o}{=} \PY{n}{F}\PY{o}{.}\PY{n}{softmax}\PY{p}{(}\PY{n}{scores}\PY{p}{,} \PY{n}{dim}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{attn\PYZus{}weights} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout}\PY{p}{(}\PY{n}{attn\PYZus{}weights}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Apply attention to values: (B, num\PYZus{}heads, T\PYZus{}dec, d\PYZus{}k)}
+        \PY{n}{attn\PYZus{}output} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{matmul}\PY{p}{(}\PY{n}{attn\PYZus{}weights}\PY{p}{,} \PY{n}{V}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Reshape back to (B, T\PYZus{}dec, C)}
+        \PY{n}{attn\PYZus{}output} \PY{o}{=} \PY{n}{attn\PYZus{}output} \PYZbs{}
+            \PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)} \PYZbs{}
+            \PY{o}{.}\PY{n}{contiguous}\PY{p}{(}\PY{p}{)} \PYZbs{}
+            \PY{o}{.}\PY{n}{view}\PY{p}{(}\PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{t\PYZus{}dec}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Final linear projection}
+        \PY{n}{output} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{w\PYZus{}o}\PY{p}{(}\PY{n}{attn\PYZus{}output}\PY{p}{)}
+        \PY{k}{return} \PY{n}{output}
+\end{Verbatim}
+\end{tcolorbox}
+
+    imaginer que vous avez \textbf{8 experts} (num\_heads=8) qui analysent
+la même séquence vidéo, mais chacun se spécialise sur un aspect
+différent :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Expert 1} : Se concentre sur la \textbf{forme des mains}
+\item
+  \textbf{Expert 2} : Analyse les \textbf{expressions faciales}\\
+\item
+  \textbf{Expert 3} : Étudie la \textbf{vitesse des mouvements}
+\item
+  \textbf{Expert 4} : Observe la \textbf{direction des gestes}
+\item
+  \ldots{} et ainsi de suite jusqu'à l'expert 8
+\end{itemize}
+
+Chaque expert regarde la même vidéo, mais \textbf{se pose des questions
+différentes} et \textbf{tire des conclusions différentes}.
+
+\textbf{Initialisation : Préparation des Experts}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.d\_k }\OperatorTok{=}\NormalTok{ d\_model }\OperatorTok{//}\NormalTok{ num\_heads  }\CommentTok{\# Dimension de chaque tête}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Exemple} : Si \texttt{d\_model=512} et \texttt{num\_heads=8},
+alors \texttt{d\_k=64}.\\
+Chaque expert reçoit 64 dimensions sur lesquelles se spécialiser, comme
+si on donnait à chaque traducteur un domaine spécifique à analyser.
+
+Concerant, les Quatre Projections Linéaires :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \texttt{w\_q} - Les Questions de l'Expert
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.w\_q }\OperatorTok{=}\NormalTok{ nn.Linear(d\_model, d\_model, bias}\OperatorTok{=}\VariableTok{False}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Rôle} : Transforme ce que le décodeur ``veut savoir'' en
+questions spécifiques.
+
+\textbf{Exemple} : Si le décodeur génère le mot ``MAISON'',
+\texttt{w\_q} pose la question : ``Quelles parties de la vidéo montrent
+des gestes liés à une maison ?''
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \texttt{w\_k} - Les Clés de Référence
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.w\_k }\OperatorTok{=}\NormalTok{ nn.Linear(d\_model, d\_model, bias}\OperatorTok{=}\VariableTok{False}\NormalTok{)  }
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Rôle} : Transforme chaque frame de l'encodeur en ``étiquette''
+qui décrit son contenu.
+
+\textbf{Exemple} : Une frame où les mains forment un toit aura une clé
+qui dit ``je contient un geste de construction''.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \texttt{w\_v} - Les Valeurs Informatives
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.w\_v }\OperatorTok{=}\NormalTok{ nn.Linear(d\_model, d\_model, bias}\OperatorTok{=}\VariableTok{False}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Rôle} : Transforme chaque frame en information détaillée
+utilisable.
+
+\textbf{Exemple} : La même frame avec les mains en toit contient la
+valeur ``position mains: toit, orientation: vers le haut, mouvement:
+statique''.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \texttt{w\_o} - La Synthèse des Experts
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.w\_o }\OperatorTok{=}\NormalTok{ nn.Linear(d\_model, d\_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Rôle} : Combine les conclusions de tous les experts en une
+réponse cohérente.
+
+    \subsubsection{Le Processus de l'Attention en
+Action**}\label{le-processus-de-lattention-en-action}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Étape 1 : Préparation des Experts}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Q }\OperatorTok{=} \VariableTok{self}\NormalTok{.w\_q(query).view(batch\_size, t\_dec, }\VariableTok{self}\NormalTok{.num\_heads, }\VariableTok{self}\NormalTok{.d\_k).transpose(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Transformation concrète} :
+
+\begin{verbatim}
+Avant: (4, 10, 512)  # 4 vidéos, 10 mots à traduire, 512 dimensions
+Après: (4, 8, 10, 64)  # 4 vidéos, 8 experts, 10 mots, 64 dimensions par expert
+\end{verbatim}
+
+Chaque expert reçoit sa propre version des questions !
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Étape 2 : Calcul des Affinités}, Il s'agit de
+  l'auto-attention. L'auto-attention permet à chaque frame de la
+  séquence d'interagir avec toutes les autres frames, capturant ainsi :
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Les \textbf{dépendances à longue portée} entre gestes éloignés dans le
+  temps
+\item
+  Les \textbf{relations contextuelles} entre différents éléments du
+  signe
+\item
+  La \textbf{cohérence temporelle} de l'ensemble du mouvement
+\end{itemize}
+
+\textbf{Équation Clé}
+\[\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V\]
+
+Où : - \(Q\) (Queries) : Ce que chaque position ``cherche'' - \(K\)
+(Keys) : Ce que chaque position ``offre''\\
+- \(V\) (Values) : L'information réelle à agréger
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{scores }\OperatorTok{=}\NormalTok{ torch.matmul(Q, K.transpose(}\OperatorTok{{-}}\DecValTok{2}\NormalTok{, }\OperatorTok{{-}}\DecValTok{1}\NormalTok{)) }\OperatorTok{/} \VariableTok{self}\NormalTok{.scale}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Ce qui se passe vraiment} : Chaque expert compare ses questions
+avec toutes les étiquettes des frames vidéo.
+
+\textbf{Exemple} : - Expert ``forme des mains'' demande : ``Quelles
+frames ont des mains en forme de toit ?'' - Les frames où les mains
+forment un toit obtiennent un \textbf{score élevé} - Les frames avec
+d'autres formes obtiennent un \textbf{score bas}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Étape 3 : Application du Masque et Softmax}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{if}\NormalTok{ mask }\KeywordTok{is} \KeywordTok{not} \VariableTok{None}\NormalTok{:}
+\NormalTok{    scores }\OperatorTok{=}\NormalTok{ scores.masked\_fill(mask }\OperatorTok{==} \DecValTok{0}\NormalTok{, }\OperatorTok{{-}}\FloatTok{1e9}\NormalTok{)}
+\NormalTok{attn\_weights }\OperatorTok{=}\NormalTok{ F.softmax(scores, dim}\OperatorTok{={-}}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Le masque} : Comme dire à certains experts ``ne regarde pas ces
+frames-là, elles ne sont pas pertinentes''.
+
+\textbf{Softmax} : Convertit les scores en \textbf{pourcentages
+d'attention}.\\
+Si une frame a un score de 0.8, cela signifie ``80\% de ton attention
+devrait être sur cette frame''.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \textbf{Étape 4 : Combinaison Pondérée}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{attn\_output }\OperatorTok{=}\NormalTok{ torch.matmul(attn\_weights, V)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Action} : Chaque expert prend les informations détaillées (V) et
+les combine selon ses pourcentages d'attention.
+
+\textbf{Exemple} : - Expert ``forme des mains'' : 80\% d'info frame15 +
+20\% d'info frame16 - Expert ``expression faciale'' : 60\% frame14 +
+40\% frame15
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  \textbf{Étape 5 : Réunion des Experts}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{attn\_output }\OperatorTok{=}\NormalTok{ attn\_output.transpose(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{).contiguous().view(batch\_size, t\_dec, d\_model)}
+\NormalTok{output }\OperatorTok{=} \VariableTok{self}\NormalTok{.w\_o(attn\_output)}
+\end{Highlighting}
+\end{Shaded}
+
+On rassemble les conclusions des 8 experts et on les combine
+intelligemment.
+
+\begin{verbatim}
+Expert1: "C'est le geste MAISON à 85% de confiance"
+Expert2: "L'expression confirme un lieu à 70%"  
+Expert3: "Le mouvement suggère une destination à 90%"
+→ Synthèse: "Traduire par 'MAISON' avec haute confiance"
+\end{verbatim}
+
+    \subsection{Le Cerveau qui
+Réfléchit}\label{le-cerveau-qui-ruxe9fluxe9chit}
+
+Imaginer que votre modèle vient de comprendre, grâce à l'attention,
+qu'une séquence de gestes signifie ``JE T'AIME''. Mais cette
+compréhension est encore ``superficielle''. C'est comme reconnaître des
+lettres sans comprendre le sens profond des mots.
+
+Le \textbf{réseau feed-forward position-wise} agit comme le
+\textbf{cerveau qui réfléchit en profondeur}. Après que l'attention a
+``regardé'' les bonnes parties de la vidéo, ce module prend ces
+observations et les \textbf{transforme en compréhension sémantique
+riche}.
+
+\textbf{Analogie Concrete : L'Usine de Transformation des Idées}
+
+Imagine que chaque position dans ta séquence (chaque ``instant de
+compréhension'') passe par une petite usine de traitement :
+
+\begin{verbatim}
+[Idée brute] --> [Machine à enrichir] --> [Idée enrichie] --> [Machine à synthétiser] --> [Idée profonde]
+\end{verbatim}
+
+Chaque usine est identique et travaille indépendamment sur son propre
+``lot'' d'information, mais toutes suivent le même processus de
+raffinement.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{PositionwiseFeedForward}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Position\PYZhy{}wise feed\PYZhy{}forward network.}
+
+\PY{l+s+sd}{    This module applies the same feed\PYZhy{}forward network to each position}
+\PY{l+s+sd}{    separately and identically. It consists of two linear transformations}
+\PY{l+s+sd}{    with a non\PYZhy{}linearity in between.}
+
+\PY{l+s+sd}{    :param d\PYZus{}model: The dimension of input and output features.}
+\PY{l+s+sd}{    :param d\PYZus{}ff: The dimension of the hidden layer in feed\PYZhy{}forward network.}
+\PY{l+s+sd}{    :param dropout: Dropout rate, defaults to 0.1.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,} \PY{n}{d\PYZus{}ff}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,} \PY{n}{dropout}\PY{p}{:} \PY{n+nb}{float} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{k+kc}{None}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Initialize PositionwiseFeedForward module.\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{linear1} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{d\PYZus{}ff}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{linear2} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{d\PYZus{}ff}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{n}{dropout}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{activation} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{GELU}\PY{p}{(}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}: GELU activation often works better than ReLU;}
+
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{        Forward pass of position\PYZhy{}wise feed\PYZhy{}forward network.}
+
+\PY{l+s+sd}{        :param x: Input tensor of shape (B, T, C).}
+\PY{l+s+sd}{        :returns: Output tensor of same shape as input (B, T, C).}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{c+c1}{\PYZsh{} First linear transformation + activation + dropout}
+        \PY{n}{hidden} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{activation}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{linear1}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+        \PY{n}{hidden} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout}\PY{p}{(}\PY{n}{hidden}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Second linear transformation}
+        \PY{n}{output} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{linear2}\PY{p}{(}\PY{n}{hidden}\PY{p}{)}
+        \PY{k}{return} \PY{n}{output}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Étape 1 : Expansion et Enrichissement}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.linear1 }\OperatorTok{=}\NormalTok{ nn.Linear(d\_model, d\_ff)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Ce qui se passe} : On prend une compréhension de dimension
+\texttt{d\_model} (ex: 512) et on l'\textbf{étend} vers une dimension
+beaucoup plus grande \texttt{d\_ff} (ex: 2048).
+
+\textbf{Analogie} : - \textbf{Entrée} : ``C'est le geste MAISON'' (512
+dimensions de compréhension) - \textbf{Sortie linear1} : ``MAISON =
+bâtiment + toit + murs + fenêtres + porte + habitat + famille + sécurité
++ \ldots{}'' (2048 dimensions détaillées)
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Étape 2 : Activation GELU - La Pensée Non-Linéaire}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.activation }\OperatorTok{=}\NormalTok{ nn.GELU()}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{GELU vs ReLU} : - \textbf{ReLU} : ``Si c'est négatif, ignore; si
+c'est positif, garde'' (binaire) - \textbf{GELU} : ``Si c'est négatif,
+atténue progressivement; si c'est positif, garde mais de façon nuancée''
+(graduel)
+
+\textbf{Formule GELU} : \(GELU(x) = x \cdot \Phi(x)\) où \(\Phi(x)\) est
+la fonction de répartition gaussienne
+
+\textbf{Exemple concret} : - Une feature dit ``mouvement des mains =
+0.8'' (forte confiance) - GELU garde cette information presque intacte -
+Une autre feature dit ``expression faciale = -0.1'' (légère
+contradiction)\\
+- GELU l'atténue légèrement plutôt que de la supprimer complètement
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Étape 3 : Régularisation}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.dropout }\OperatorTok{=}\NormalTok{ nn.Dropout(dropout)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Rôle} : Pendant l'entraînement, désactive aléatoirement 10\% des
+neurones pour éviter la ``paresse intellectuelle''.
+
+\textbf{Effet} : Force le réseau à développer des
+\textbf{représentations redondantes et robustes}.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \textbf{Étape 4 : Compression et Synthèse}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.linear2 }\OperatorTok{=}\NormalTok{ nn.Linear(d\_ff, d\_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Ce qui se passe} : On repasse de la dimension étendue (2048) à
+la dimension originale (512), mais maintenant l'information est
+\textbf{enrichie et transformée}.
+
+\textbf{Analogie} : - \textbf{Entrée linear2} : ``MAISON = bâtiment +
+toit + murs + fenêtres + porte + habitat + famille + sécurité +
+\ldots{}'' - \textbf{Sortie linear2} : ``Concept MAISON enrichi'' (même
+dimension 512, mais signification plus profonde)
+
+\subsubsection{Processus Complet sur un Exemple
+Réel}\label{processus-complet-sur-un-exemple-ruxe9el}
+
+\textbf{Scénario} : Le modèle analyse le signe ``AIMER'' en langue des
+signes
+
+\textbf{Entrée au module} (après l'attention) :
+
+\begin{verbatim}
+[Position 22]: "Mains sur cœur + regard direct + sourire léger" (512D)
+\end{verbatim}
+
+\textbf{Étape par étape} :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Linear1 - Expansion} :
+
+\begin{verbatim}
+Input: 512 dimensions → Output: 2048 dimensions
+"Mains sur cœur" → "cœur + affection + amour + émotion + sentiment + tendresse + attachement + ..."
+\end{verbatim}
+\item
+  \textbf{GELU - Raffinement non-linéaire} :
+
+\begin{verbatim}
+Renforce: "affection", "amour", "tendresse"  
+Atténue: "mouvement brusque" (peu pertinent)
+Conserve: "regard direct" (modérément important)
+\end{verbatim}
+\item
+  \textbf{Dropout - Régularisation} :
+
+\begin{verbatim}
+Désactive aléatoirement: "attachement", "sentiment" (forçant d'autres features à compenser)
+\end{verbatim}
+\item
+  \textbf{Linear2 - Synthèse} :
+
+\begin{verbatim}
+Input: 2048 dimensions → Output: 512 dimensions
+"affection + amour + tendresse + émotion + ..." → "Concept AIMER enrichi"
+\end{verbatim}
+\end{enumerate}
+
+\textbf{Résultat} : La même position a maintenant une
+\textbf{compréhension bien plus riche} du geste ``AIMER''.
+
+\begin{quote}
+\textbf{Pourquoi ``Position-wise'' ?}
+\end{quote}
+
+\textbf{Clé importante} : Le même réseau feed-forward est appliqué
+\textbf{indépendamment à chaque position} dans la séquence.
+
+\textbf{Exemple} avec une séquence de 3 frames :
+
+\begin{verbatim}
+Frame 15: [geste JE]     → FFN indépendant → [JE enrichi]
+Frame 16: [geste T']     → FFN indépendant → [T' enrichi]  
+Frame 17: [geste AIME]   → FFN indépendant → [AIME enrichi]
+\end{verbatim}
+
+Chaque frame passe par sa \textbf{propre copie} du même réseau
+feed-forward. C'est comme si chaque instant avait son propre petit
+cerveau qui réfléchit, mais tous ces petits cerveaux ont été entraînés
+ensemble.
+
+\begin{quote}
+\textbf{Le Rôle dans l'Architecture Globale}
+\end{quote}
+
+Dans une couche complète de Transformer : 1. \textbf{MultiHeadAttention}
+: ``Regarde quelles parties sont importantes'' 2.
+\textbf{PositionwiseFeedForward} : ``Réfléchis profondément à ce que tu
+as vu''
+
+\textbf{Analogie} : - \textbf{Attention} : Comme discuter avec des
+collègues pour comprendre un problème - \textbf{FeedForward} : Comme
+rentrer chez soi et réfléchir seul en profondeur
+
+\begin{quote}
+\textbf{Pourquoi \(d_{ff} = 4 \times d_{model}\) ?}
+\end{quote}
+
+La règle empirique \texttt{d\_ff\ =\ 4\ ×\ d\_model} (2048 pour
+d\_model=512) vient de l'observation que :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Trop petit} : Le réseau ne peut pas capturer des
+  transformations complexes
+\item
+  \textbf{Trop grand} : Risque de surapprentissage et calculs inutiles
+\item
+  \textbf{4×} : Bon compromis expressivité/efficacité
+\end{itemize}
+
+\textbf{Exemple avec des Dimensions Réelles}
+
+\textbf{Configuration typique} :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d\_model }\OperatorTok{=} \DecValTok{512}    \CommentTok{\# Dimension des embeddings}
+\NormalTok{d\_ff }\OperatorTok{=} \DecValTok{2048}      \CommentTok{\# Dimension cachée (4 × d\_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Flux de données} :
+
+\begin{verbatim}
+Input: (4, 100, 512)    # 4 vidéos, 100 frames, 512 features
+Linear1: (4, 100, 512) → (4, 100, 2048)   # Expansion
+GELU: (4, 100, 2048) → (4, 100, 2048)     # Activation
+Dropout: (4, 100, 2048) → (4, 100, 2048)  # Régularisation  
+Linear2: (4, 100, 2048) → (4, 100, 512)   # Compression
+\end{verbatim}
+
+\subsubsection{Impact sur la Traduction de Langue des
+Signes}\label{impact-sur-la-traduction-de-langue-des-signes}
+
+\textbf{Sans PositionwiseFeedForward} : - Le modèle reconnaîtrait les
+gestes mais sans comprendre leur \textbf{signification contextuelle} -
+``MAISON'' serait juste un geste de toit, pas le concept de domicile
+
+\textbf{Avec PositionwiseFeedForward} : - ``MAISON'' devient associé à
+``habitat'', ``famille'', ``sécurité'', ``retour'' - ``AIMER'' devient
+associé à ``affection'', ``émotion'', ``relation'', ``attachement''
+
+Ce module est essentiel pour transformer la \textbf{reconnaissance de
+patterns} en \textbf{compréhension sémantique}, permettant une
+traduction fidèle et naturelle.
+
+\textbf{Question} : Pourquoi penses-tu qu'il est important que chaque
+position soit traitée indépendamment, plutôt que d'avoir un réseau qui
+regarde toute la séquence en même temps ?
+
+    \subsection{La couche d'encodage}\label{la-couche-dencodage}
+
+La couche d'encodage est l'unité fondamentale de compréhension pour la
+langue des signes. Elle est composée des autres modules. Voici son
+implémnentation :
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{EncoderLayer}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Single encoder layer of the Transformer.}
+
+\PY{l+s+sd}{    This layer contains multi\PYZhy{}head self\PYZhy{}attention and position\PYZhy{}wise}
+\PY{l+s+sd}{    feed\PYZhy{}forward network with residual connections and layer normalization.}
+
+\PY{l+s+sd}{    :param d\PYZus{}model: The dimension of input and output features.}
+\PY{l+s+sd}{    :param num\PYZus{}heads: The number of attention heads.}
+\PY{l+s+sd}{    :param d\PYZus{}ff: The dimension of hidden layer in feed\PYZhy{}forward network.}
+\PY{l+s+sd}{    :param dropout: Dropout rate, defaults to 0.1.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{d\PYZus{}model}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{num\PYZus{}heads}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{d\PYZus{}ff}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{dropout}\PY{p}{:} \PY{n+nb}{float} \PY{o}{=} \PY{l+m+mf}{0.1}
+    \PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{k+kc}{None}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Initialize EncoderLayer module.\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{self\PYZus{}attn} \PY{o}{=} \PY{n}{MultiHeadAttention}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{num\PYZus{}heads}\PY{p}{,} \PY{n}{dropout}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{feed\PYZus{}forward} \PY{o}{=} \PY{n}{PositionwiseFeedForward}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{d\PYZus{}ff}\PY{p}{,} \PY{n}{dropout}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Layer normalization for residual connections}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm1} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{LayerNorm}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm2} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{LayerNorm}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{n}{dropout}\PY{p}{)}
+
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{,}
+                \PY{n}{mask}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor} \PY{o}{=} \PY{k+kc}{None}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{        Forward pass of encoder layer.}
+
+\PY{l+s+sd}{        :param x: Input tensor of shape (B, T, C).}
+\PY{l+s+sd}{        :type x: torch.Tensor}
+\PY{l+s+sd}{        :param mask: Optional mask tensor for attention, defaults to None.}
+\PY{l+s+sd}{        :type mask: torch.Tensor, optional}
+\PY{l+s+sd}{        :returns: Output tensor of same shape as input (B, T, C).}
+\PY{l+s+sd}{        :rtype: torch.Tensor}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{c+c1}{\PYZsh{} Self\PYZhy{}attention with residual connection and layer norm}
+        \PY{n}{attn\PYZus{}output} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{self\PYZus{}attn}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{mask}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n}{x} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout}\PY{p}{(}\PY{n}{attn\PYZus{}output}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Residual connection}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm1}\PY{p}{(}\PY{n}{x}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Layer normalization after residual}
+
+        \PY{c+c1}{\PYZsh{} Feed\PYZhy{}forward with residual connection and layer norm}
+        \PY{n}{ff\PYZus{}output} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{feed\PYZus{}forward}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n}{x} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout}\PY{p}{(}\PY{n}{ff\PYZus{}output}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Residual connection}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm2}\PY{p}{(}\PY{n}{x}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Layer normalization after residual}
+
+        \PY{k}{return} \PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Quand tu calcules les gradients pendant la rétropropagation, chaque
+couche successive \textbf{atténue exponentiellement} le signal de
+correction.
+
+\subsubsection{\texorpdfstring{\textbf{Le Calcul des Gradients Sans
+Résiduel}}{Le Calcul des Gradients Sans Résiduel}}\label{le-calcul-des-gradients-sans-ruxe9siduel}
+
+\textbf{Prenons 3 couches simples} :
+\[ \text{Sortie} = f_3(f_2(f_1(x))) \]
+
+\textbf{Règle de la chaîne pour la rétropropagation} :
+\[ \frac{\partial \text{Sortie}}{\partial x} = \frac{\partial f_3}{\partial f_2} \times \frac{\partial f_2}{\partial f_1} \times \frac{\partial f_1}{\partial x} \]
+
+\textbf{Le problème} : Si chaque terme Jacobien a des valeurs propres
+\(< 1\), le produit devient rapidement proche de 0.
+
+\textbf{Exemple numérique} : - Si chaque couche atténue le gradient de
+50\% : \(0.5 \times 0.5 \times 0.5 = 0.125\) - Après 6 couches :
+\(0.5^6 = 0.015625\) → \textbf{98.4\% du signal est perdu} !
+
+\subsubsection{\texorpdfstring{\textbf{La Solution Résiduelle : Les
+Autoroutes de
+Gradients}}{La Solution Résiduelle : Les Autoroutes de Gradients}}\label{la-solution-ruxe9siduelle-les-autoroutes-de-gradients}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OperatorTok{=}\NormalTok{ x }\OperatorTok{+} \VariableTok{self}\NormalTok{.dropout(attn\_output)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Transforme} : \[ \text{Sortie} = f(x) \] \textbf{En} :
+\[ \text{Sortie} = x + f(x) \]
+
+\subsubsection{\texorpdfstring{\textbf{Impact sur le Calcul des
+Gradients}}{Impact sur le Calcul des Gradients}}\label{impact-sur-le-calcul-des-gradients}
+
+\textbf{Dérivée de la connexion résiduelle} :
+\[ \frac{\partial \text{Sortie}}{\partial x} = \frac{\partial (x + f(x))}{\partial x} = 1 + \frac{\partial f(x)}{\partial x} \]
+
+\textbf{Conséquence cruciale} : Même si
+\(\frac{\partial f(x)}{\partial x} \approx 0\), tu as toujours ce
+\textbf{+1} qui garantit que :
+\[ \left\| \frac{\partial \text{Sortie}}{\partial x} \right\| \geq 1 \]
+
+\subsubsection{\texorpdfstring{\textbf{Exemple Concret
+d'Optimisation}}{Exemple Concret d'Optimisation}}\label{exemple-concret-doptimisation}
+
+\textbf{Scénario} : Tu entraînes ton modèle sur le signe ``MAISON''
+
+\textbf{Sans résiduel} (après 6 couches) :
+\[ \nabla_{W_1} \mathcal{L} \approx 0.0001 \quad \text{// Trop petit} \]
+\[ W_1 \leftarrow W_1 - \eta \times 0.0001 \quad \text{// Mise à jour négligeable} \]
+
+\textbf{Avec résiduel} (même après 6 couches) :
+\[ \nabla_{W_1} \mathcal{L} \approx 1.0 + 0.0001 \approx 1.0001 \quad \text{// Signal fort} \]
+\[ W_1 \leftarrow W_1 - \eta \times 1.0001 \quad \text{// Mise à jour significative} \]
+
+    \subsubsection{\texorpdfstring{\textbf{Analyse Mathématique
+Approfondie}}{Analyse Mathématique Approfondie}}\label{analyse-mathuxe9matique-approfondie}
+
+\textbf{Pour une couche résiduelle} : \[ y = x + f(x, W) \]
+
+\textbf{Gradient par rapport aux poids} :
+\[ \frac{\partial \mathcal{L}}{\partial W} = \frac{\partial \mathcal{L}}{\partial y} \times \frac{\partial y}{\partial W} = \frac{\partial \mathcal{L}}{\partial y} \times \frac{\partial f(x, W)}{\partial W} \]
+
+\textbf{Gradient par rapport à l'entrée} :
+\[ \frac{\partial \mathcal{L}}{\partial x} = \frac{\partial \mathcal{L}}{\partial y} \times \frac{\partial y}{\partial x} = \frac{\partial \mathcal{L}}{\partial y} \times \left(1 + \frac{\partial f(x, W)}{\partial x}\right) \]
+
+\textbf{La magie opère} : Même si
+\(\frac{\partial f(x, W)}{\partial x} \to 0\), le terme \(1\) préserve
+le gradient.
+
+Sans Connexions Résiduelles, nous avons l'effet multiplicatif
+dévastateur :
+
+\begin{verbatim}
+Entrée → [C1] → [C2] → [C3] → ... → [CN] → Sortie
+\end{verbatim}
+
+\[\|\nabla_{W_{\text{couche1}}} \mathcal{L}\| \propto \prod_{i=1}^{N} \|J_i\| \quad \text{avec} \quad \|J_i\| < 1\]
+
+\begin{itemize}
+\tightlist
+\item
+  \(\|\nabla_{W_{\text{couche1}}} \mathcal{L}\|\) : \textbf{Norme du
+  gradient} pour les poids de la première couche.
+\item
+  \(\mathcal{L}\) : La fonction de perte (loss) qu'on cherche à
+  minimiser.
+\item
+  \(J_i\) : \textbf{Matrice Jacobienne} de la couche \(i\), qui capture
+  comment la sortie change par rapport à l'entrée.
+\end{itemize}
+
+\textbf{Pour atteindre la couche 1}, le gradient doit traverser toutes
+les couches intermédiaires :
+
+\[
+Gradient\_Couche1 = Gradient\_Sortie \times J_N \times J_{N-1} \times \ldots \times J_2 \times J_1
+\]
+
+\textbf{Chaque \(J_i\) est une matrice} qui représente la
+``sensibilité'' de la couche \(i\). Si \(\|J_i\| < 1\), cela signifie
+que la couche \textbf{atténue} le signal.
+
+Avec Connexions Résiduelles, nous avons l'effet additif salutaire.
+
+\[\|\nabla_{W_{\text{couche1}}} \mathcal{L}\| \propto \sum_{i=1}^{N} \|J_i\|\]
+
+La propagation en arrière peut ``sauter'' des couches avec les
+connexions résiduelles. Ce qui donne la possibilité au gradient
+d'atteigne la première couche :
+
+\begin{verbatim}
+Entrée → [C1] →→→ [C2] →→→ [C3] →→→ ... →→→ [CN] → Sortie
+   │        │        │        │                 │
+   └────────┴────────┴────────┴─────────────────┘
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Chemin direct} : Sortie → Couche1 (gradient ≈ 1.0)
+\item
+  \textbf{Chemin à travers une couche} : Sortie → Couche2 → Couche1
+  (gradient ≈ \(\|J_2\|\))
+\item
+  \textbf{Chemin à travers deux couches} : Sortie → Couche3 → Couche2 →
+  Couche1 (gradient ≈ \(\|J_3\| \times \|J_2\|\))
+\end{enumerate}
+
+\textbf{La somme} capture l'idée que tous ces chemins contribuent au
+gradient final.
+
+\textbf{Un seul chemin} : Gradient doit traverser toutes les couches
+
+Sans connexions résiduelles, après plusieurs 6 couches par exemple, le
+gradient couche 1 a environ 12\% de la force originale. Le problème est
+que la reconnaissance des formes basiques des mains n'évolue presque
+pas. Ce qui génère une mauvaise apprentissage des patterns élémentaires.
+
+Avec les connexions résiduels (même après 6 couches), le gradient de la
+couche 1 a environs 400\% de la force originale. Ce qui permet à toutes
+les couches d'apprendre simultanément, efficacement et arriver à
+reconnaitre des patterns simples et complexes.
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Nombre de Couches & Sans Résiduels & Avec Résiduels \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+3 couches & 34\% & 210\% \\
+6 couches & 12\% & 420\% \\
+12 couches & 1.4\% & 840\% \\
+24 couches & 0.02\% & 1680\% \\
+\end{longtable}
+
+\textbf{Conclusion} : Plus le réseau est profond, plus les résiduels
+deviennent essentiels pour maintenir des gradients utilisables.
+
+C'est pourquoi les Transformers modernes peuvent avoir des dizaines de
+couches tout en restant entraînables efficacement !
+
+Dans le Contexte de notre Encodeur, pendant l'optimisation : -
+\textbf{Self-attention} : Apprend à pondérer correctement les frames -
+\textbf{Feed-forward} : Apprend les transformations non-linéaires
+complexes\\
+- \textbf{Grâce aux résiduels} : Les gradients circulent librement à
+travers toutes les couches
+
+\textbf{Résultat} : Même la première couche reçoit un signal d'erreur
+fort, permettant un apprentissage coordonné de tout le réseau. Grâce aux
+chemins directs, on obtient un comportement \textbf{additif} plutôt que
+multiplicatif.
+
+    \section{Décodeur de la langue des signes en
+naturelle}\label{duxe9codeur-de-la-langue-des-signes-en-naturelle}
+
+    Cette partie présente une analyse approfondie de l'architecture du
+décodeur Transformer spécialisé dans la traduction de la langue des
+signes. L'intégration du tokenizer DeepSeek 3.1 permet une modélisation
+linguistique avancée des séquences textuelles générées, offrant ainsi
+une traduction contextuellement riche et grammaticalement correcte des
+séquences gestuelles vers le langage naturel.
+
+La traduction automatique de la langue des signes représente un défi
+complexe nécessitant une modélisation séquentielle sophistiquée. Le
+décodeur Transformer décrit dans ce document opère la transformation des
+représentations encodées des séquences gestuelles en séquences
+textuelles en langue naturelle. L'incorporation du tokenizer DeepSeek
+3.1 au niveau de l'entrée du décodeur permet de bénéficier d'un
+vocabulaire étendu de 128 000 tokens, capturant les subtilités
+morphologiques et sémantiques du français contemporain.
+
+L'architecture proposée suit le paradigme encodeur-décodeur traditionnel
+des Transformers, mais avec des adaptations spécifiques au domaine de la
+langue des signes. Le décodeur prend en entrée les séquences tokenisées
+par DeepSeek 3.1 et les représentations contextuelles produites par
+l'encodeur, générant ainsi des séquences textuelles de manière
+auto-régressive.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{TransformerDecoder}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Complete Transformer Decoder.}
+
+\PY{l+s+sd}{    This module implements the full decoder stack of the Transformer model.}
+\PY{l+s+sd}{    It takes the encoder outputs and generates output sequences}
+\PY{l+s+sd}{    autoregressively.}
+
+\PY{l+s+sd}{    :param output\PYZus{}dim: Dimension of output features (vocabulary size}
+\PY{l+s+sd}{      or feature dimension).}
+\PY{l+s+sd}{    :param d\PYZus{}model: Dimension of the model (embedding size).}
+\PY{l+s+sd}{    :param num\PYZus{}heads: Number of attention heads.}
+\PY{l+s+sd}{    :param num\PYZus{}layers: Number of decoder layers.}
+\PY{l+s+sd}{    :param d\PYZus{}ff: Dimension of feed\PYZhy{}forward network hidden layer.}
+\PY{l+s+sd}{    :param dropout: Dropout rate, defaults to 0.1.}
+\PY{l+s+sd}{    :param max\PYZus{}seq\PYZus{}len:}
+\PY{l+s+sd}{      Maximum sequence length for positional encoding, defaults to 5000.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{output\PYZus{}dim}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{d\PYZus{}model}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{num\PYZus{}heads}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{num\PYZus{}layers}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{d\PYZus{}ff}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{dropout}\PY{p}{:} \PY{n+nb}{float} \PY{o}{=} \PY{l+m+mf}{0.1}\PY{p}{,}
+        \PY{n}{max\PYZus{}seq\PYZus{}len}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{4096}\PY{p}{,}
+    \PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{k+kc}{None}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Initialize TransformerDecoder module.\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Output projection (for token embeddings or output features):}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{embeddings} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Embedding}\PY{p}{(}\PY{n}{output\PYZus{}dim}\PY{p}{,} \PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{padding\PYZus{}idx}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Positional encoding:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{pos\PYZus{}encoding} \PY{o}{=} \PY{n}{PositionalEncoding}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{max\PYZus{}seq\PYZus{}len}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Dropout for input embeddings:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{n}{dropout}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Stack of decoder layers:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{layers} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{ModuleList}\PY{p}{(}\PY{p}{[}
+            \PY{n}{DecoderLayer}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{num\PYZus{}heads}\PY{p}{,} \PY{n}{d\PYZus{}ff}\PY{p}{,} \PY{n}{dropout}\PY{p}{)}
+            \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}layers}\PY{p}{)}
+        \PY{p}{]}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Final layer norm}
+        \PY{c+c1}{\PYZsh{} self.norm = nn.LayerNorm(d\PYZus{}model)}
+
+        \PY{c+c1}{\PYZsh{} Final output projection (to vocabulary or target feature dimension):}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{fc} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{output\PYZus{}dim}\PY{p}{)}
+
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf}{forward}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{x}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{,}
+        \PY{n}{encoder\PYZus{}output}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{,}
+        \PY{n}{self\PYZus{}attn\PYZus{}mask}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor} \PY{o}{=} \PY{k+kc}{None}\PY{p}{,}
+        \PY{n}{cross\PYZus{}attn\PYZus{}mask}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor} \PY{o}{=} \PY{k+kc}{None}
+    \PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{        Forward pass of Transformer decoder.}
+
+\PY{l+s+sd}{        :param x: Input tensor of shape (B, T\PYZus{}dec, output\PYZus{}dim)}
+\PY{l+s+sd}{          \PYZhy{} target sequence.}
+\PY{l+s+sd}{        :param encoder\PYZus{}output: Encoder output of shape (B, T\PYZus{}enc, d\PYZus{}model).}
+\PY{l+s+sd}{        :param self\PYZus{}attn\PYZus{}mask: Mask for decoder self\PYZhy{}attention to prevent}
+\PY{l+s+sd}{          looking at future tokens, defaults to None.}
+\PY{l+s+sd}{        :param cross\PYZus{}attn\PYZus{}mask: Mask for cross\PYZhy{}attention, defaults to None.}
+\PY{l+s+sd}{        :returns: Output tensor of shape (B, T\PYZus{}dec, output\PYZus{}dim).}
+
+\PY{l+s+sd}{        :raises ValueError: If input tensor does not have 3 dimensions.}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{c+c1}{\PYZsh{} Validate input shape:}
+        \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{)} \PY{o}{!=} \PY{l+m+mi}{2}\PY{p}{:}
+            \PY{k}{raise} \PY{n+ne}{ValueError}\PY{p}{(}
+                \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Input must have 3 dimensions (B, T\PYZus{}dec, output\PYZus{}dim),}\PY{l+s+s2}{\PYZdq{}}
+                \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{got }\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZbs{}\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}
+            \PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Project input to model dimension}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{embeddings}\PY{p}{(}\PY{n}{x}\PY{p}{)}  \PY{c+c1}{\PYZsh{} (B, T\PYZus{}dec, d\PYZus{}model)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Add positional encoding and apply dropout}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{pos\PYZus{}encoding}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Pass through each decoder layer}
+        \PY{k}{for} \PY{n}{layer} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{layers}\PY{p}{:}
+            \PY{n}{x} \PY{o}{=} \PY{n}{layer}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{encoder\PYZus{}output}\PY{p}{,} \PY{n}{self\PYZus{}attn\PYZus{}mask}\PY{p}{,} \PY{n}{cross\PYZus{}attn\PYZus{}mask}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Apply final layer norm}
+        \PY{c+c1}{\PYZsh{} x = self.norm(x)}
+
+        \PY{c+c1}{\PYZsh{} Project back to output dimension:}
+        \PY{n}{output} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{fc}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{k}{return} \PY{n}{output}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Initialisation et Configuration du Module}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def} \FunctionTok{\_\_init\_\_}\NormalTok{(}
+    \VariableTok{self}\NormalTok{,}
+\NormalTok{    output\_dim: }\BuiltInTok{int}\NormalTok{,}
+\NormalTok{    d\_model: }\BuiltInTok{int}\NormalTok{,}
+\NormalTok{    num\_heads: }\BuiltInTok{int}\NormalTok{,}
+\NormalTok{    num\_layers: }\BuiltInTok{int}\NormalTok{,}
+\NormalTok{    d\_ff: }\BuiltInTok{int}\NormalTok{,}
+\NormalTok{    dropout: }\BuiltInTok{float} \OperatorTok{=} \FloatTok{0.1}\NormalTok{,}
+\NormalTok{    max\_seq\_len: }\BuiltInTok{int} \OperatorTok{=} \DecValTok{4096}\NormalTok{,}
+\NormalTok{) }\OperatorTok{{-}\textgreater{}} \VariableTok{None}\NormalTok{:}
+\end{Highlighting}
+\end{Shaded}
+
+L'initialisation du décodeur commence par la définition des paramètres
+fondamentaux qui gouvernent sa capacité représentationnelle. Le
+paramètre \texttt{output\_dim} correspond exactement à la taille du
+vocabulaire DeepSeek 3.1, établissant une correspondance bijective entre
+l'espace de représentation interne et l'espace lexical. Cette dimension
+typiquement fixée à 128 000 tokens permet de couvrir l'ensemble des
+unités linguistiques du français, des morphèmes aux expressions
+idiomatiques.
+
+La dimension du modèle \texttt{d\_model} fixée à 512 offre un compromis
+optimal entre expressivité représentationnelle et efficacité
+computationnelle. Cette valeur, devenue standard dans les architectures
+Transformer modernes, fournit un espace suffisamment vaste pour encoder
+les relations sémantiques complexes tout en maintenant une complexité
+calculatoire raisonnable.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Système d'Embedding et Encodage Positionnel}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.embeddings }\OperatorTok{=}\NormalTok{ nn.Embedding(output\_dim, d\_model, padding\_idx}\OperatorTok{=}\DecValTok{0}\NormalTok{)}
+\VariableTok{self}\NormalTok{.pos\_encoding }\OperatorTok{=}\NormalTok{ PositionalEncoding(d\_model, max\_seq\_len)}
+\end{Highlighting}
+\end{Shaded}
+
+Le système d'embedding transforme les indices token discrets en vecteurs
+denses de dimension \(512\) (même dimension que celle de l'encodeur).
+Chaque token du vocabulaire DeepSeek se voit attribuer une signature
+vectorielle unique qui capture ses propriétés sémantiques, syntaxiques
+et distributionnelles. L'utilisation de \texttt{padding\_idx=0} permet
+de traiter efficacement les séquences de longueurs variables en ignorant
+les tokens de padding pendant les calculs d'embedding.
+
+L'encodage positionnel sinusoïdal injecte des informations temporelles
+essentielles à la modélisation des dépendances séquentielles. Étant
+donné que le décodeur fonctionne de manière auto-régressive, la
+préservation de l'ordre temporel est cruciale pour maintenir la
+cohérence grammaticale des phrases générées. Les fonctions d'encodage
+positionnel sont définies par :
+
+\[
+PE(pos, 2i) = \sin\left(\frac{pos}{10000^{2i/d_{model}}}\right)
+\]
+
+\[
+PE(pos, 2i+1) = \cos\left(\frac{pos}{10000^{2i/d_{model}}}\right)
+\]
+
+où \(pos\) représente la position dans la séquence et \(i\) l'indice de
+dimension. Cette formulation garantit que chaque position reçoit un
+encodage unique tout en permettant au modèle d'extrapoler à des
+séquences plus longues que celles rencontrées pendant l'entraînement.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Architecture en Couches et Projection Finale}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.layers }\OperatorTok{=}\NormalTok{ nn.ModuleList([}
+\NormalTok{    DecoderLayer(d\_model, num\_heads, d\_ff, dropout)}
+    \ControlFlowTok{for}\NormalTok{ \_ }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(num\_layers)}
+\NormalTok{])}
+\VariableTok{self}\NormalTok{.fc }\OperatorTok{=}\NormalTok{ nn.Linear(d\_model, output\_dim)}
+\end{Highlighting}
+\end{Shaded}
+
+L'architecture comprend un empilement de \texttt{num\_layers} couches de
+décodeur, généralement fixé à \(6\) pour les applications de traduction.
+Chaque couche de décodeur contient trois sous-composants principaux :
+l'auto-attention masquée, l'attention croisée et le réseau feed-forward
+positionnel. Cette organisation permet une transformation progressive
+des représentations, où chaque couche ajoute un niveau supplémentaire de
+compréhension contextuelle.
+
+La projection linéaire finale via \texttt{self.fc} opère la
+transformation cruciale des représentations internes riches en logits
+correspondant aux scores de chaque token du vocabulaire DeepSeek. Cette
+transformation s'effectue selon l'équation :
+
+\[
+\text{logits} = Wx + b
+\]
+
+où \(W \in \mathbb{R}^{d_{model} \times output\_dim}\) et
+\(b \in \mathbb{R}^{output\_dim}\) sont les paramètres apprenables de la
+projection.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \textbf{Transformation des Entrées Tokenisées}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OperatorTok{=} \VariableTok{self}\NormalTok{.embeddings(x)  }\CommentTok{\# (B, T\_dec, d\_model)}
+\NormalTok{x }\OperatorTok{=} \VariableTok{self}\NormalTok{.pos\_encoding(x)}
+\NormalTok{x }\OperatorTok{=} \VariableTok{self}\NormalTok{.dropout(x)}
+\end{Highlighting}
+\end{Shaded}
+
+La passe forward commence par la transformation des séquences tokenisées
+par DeepSeek 3.1 en représentations vectorielles denses. Cette étape
+convertit les identifiants numériques discrets en vecteurs continus
+riches en information sémantique. Par exemple, le token représentant
+``remerciement'' se voit attribuer des caractéristiques vectorielles qui
+reflètent sa nature poli, sa fréquence d'usage et ses relations avec
+d'autres tokens apparentés.
+
+L'application successive de l'encodage positionnel et du dropout
+prévient le surapprentissage tout en préservant l'information temporelle
+essentielle. Le dropout, avec un taux typique de 0.1, introduit une
+régularisation stochastique qui force le modèle à développer des
+représentations redondantes et robustes.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  \textbf{Propagation à Travers les Couches de Décodeur}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ layer }\KeywordTok{in} \VariableTok{self}\NormalTok{.layers:}
+\NormalTok{    x }\OperatorTok{=}\NormalTok{ layer(x, encoder\_output, self\_attn\_mask, cross\_attn\_mask)}
+\end{Highlighting}
+\end{Shaded}
+
+Chaque couche de décodeur opère une transformation séquentielle des
+représentations via trois mécanismes interdépendants. Le mécanisme
+d'auto-attention masquée permet au modèle de prendre en compte le
+contexte gauche uniquement, préservant ainsi la nature auto-régressive
+de la génération. Formellement, l'auto-attention est calculée comme :
+
+\[
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + M\right)V
+\]
+
+où \(M\) représente le masque triangulaire supérieur empêchant l'accès
+aux tokens futurs, et \(d_k = d_{model} / num\_heads\) est la dimension
+par tête d'attention.
+
+L'attention croisée constitue le pont essentiel entre les
+représentations gestuelles et linguistiques. Ce mécanisme permet au
+décodeur d'aligner chaque token généré avec les parties pertinentes de
+la séquence vidéo encodée. Mathématiquement, l'attention croisée
+s'exprime comme :
+
+\[
+\text{CrossAttention}(Q, K_{enc}, V_{enc}) = \text{softmax}\left(\frac{QK_{enc}^T}{\sqrt{d_k}}\right)V_{enc}
+\]
+
+où \(Q\) provient du décodeur et \(K_{enc}\), \(V_{enc}\) proviennent de
+la sortie de l'encodeur.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  \textbf{Projection Finale et Génération de Texte}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{output }\OperatorTok{=} \VariableTok{self}\NormalTok{.fc(x)}
+\end{Highlighting}
+\end{Shaded}
+
+La projection finale transforme les représentations contextuelles de
+dimension 512 en logits de dimension 128 000, correspondant aux scores
+de chaque token du vocabulaire DeepSeek. Ces logits sont ensuite
+transformés en probabilités via une fonction softmax, permettant la
+sélection du token suivant selon différentes stratégies de décodage.
+
+Dans le contexte de la traduction de la langue des signes, cette étape
+doit arbitrer entre plusieurs contraintes : la fidélité au message
+gestuel original, la correction grammaticale, la fluidité stylistique et
+la cohérence sémantique. La richesse du vocabulaire DeepSeek permet au
+modèle de sélectionner des formulations précises qui capturent les
+nuances du message gestuel.
+
+    \subsection{Architecture de la Couche de Décodeur Transformer pour la
+Traduction de la Langue des
+Signes}\label{architecture-de-la-couche-de-duxe9codeur-transformer-pour-la-traduction-de-la-langue-des-signes}
+
+Ce document présente une analyse technique approfondie de la couche de
+décodeur Transformer, composant fondamental dans le système de
+traduction de la langue des signes vers le langage naturel. La couche de
+décodeur intègre trois mécanismes d'attention distincts permettant une
+génération textuelle contextuellement informée et grammaticalement
+cohérente à partir de séquences gestuelles encodées.
+
+La couche de décodeur (DecoderLayer) représente l'unité de traitement
+élémentaire dans l'architecture de décodeur Transformer pour la
+traduction de la langue des signes. Chaque couche opère une
+transformation séquentielle des représentations linguistiques en
+intégrant progressivement les informations contextuelles provenant de
+l'encodeur. La conception modulaire de cette couche permet un empilement
+multiple, créant ainsi une hiérarchie de traitement où chaque niveau
+affine la compréhension et la génération textuelle.
+
+L'utilisation du tokenizer DeepSeek 3.1 apporte des avantages
+significatifs pour la traduction de la langue des signes. La granularité
+lexicale fine permettra de capturer des constructions linguistiques
+complexes particulièrement importantes pour restituer la richesse
+expressive des signes. Par exemple, un geste emphatique pourra être
+traduit par des adverbes d'intensité spécifiques, tandis qu'un signe
+dénotant une action répétitive pourra bénéficier de préfixes appropriés.
+
+La taille étendue du vocabulaire réduit considérablement le taux de
+tokens inconnus, améliorant ainsi la fluidité des traductions générées.
+De plus, la conception linguistiquement informée du tokenizer facilite
+l'apprentissage de patterns grammaticaux complexes essentiels à la
+génération de texte naturel et idiomatique.
+
+L'architecture de la couche de décodeur se distingue par l'intégration
+de trois sous-systèmes spécialisés : l'auto-attention masquée pour la
+cohérence linguistique, l'attention croisée pour l'alignement
+geste-texte, et le réseau feed-forward pour l'enrichissement
+représentationnel. Cette organisation triadique assure une
+transformation progressive et contrôlée des représentations internes.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{DecoderLayer}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Single decoder layer of the Transformer.}
+
+\PY{l+s+sd}{    This layer contains:}
+\PY{l+s+sd}{    \PYZhy{} Masked multi\PYZhy{}head self\PYZhy{}attention (to prevent looking at future tokens)}
+\PY{l+s+sd}{    \PYZhy{} Multi\PYZhy{}head cross\PYZhy{}attention (attending to encoder outputs)}
+\PY{l+s+sd}{    \PYZhy{} Position\PYZhy{}wise feed\PYZhy{}forward network}
+\PY{l+s+sd}{    All with residual connections and layer normalization.}
+
+\PY{l+s+sd}{    :param d\PYZus{}model: The dimension of input and output features.}
+\PY{l+s+sd}{    :param num\PYZus{}heads: The number of attention heads.}
+\PY{l+s+sd}{    :param d\PYZus{}ff: The dimension of hidden layer in feed\PYZhy{}forward network.}
+\PY{l+s+sd}{    :param dropout: Dropout rate, defaults to 0.1.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{d\PYZus{}model}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{num\PYZus{}heads}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{d\PYZus{}ff}\PY{p}{:} \PY{n+nb}{int}\PY{p}{,}
+        \PY{n}{dropout}\PY{p}{:} \PY{n+nb}{float} \PY{o}{=} \PY{l+m+mf}{0.1}
+    \PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{k+kc}{None}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Initialize DecoderLayer module.\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Masked self\PYZhy{}attention (prevents attending to future positions):}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{self\PYZus{}attn} \PY{o}{=} \PY{n}{MultiHeadAttention}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{num\PYZus{}heads}\PY{p}{,} \PY{n}{dropout}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Cross\PYZhy{}attention (attends to encoder outputs):}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cross\PYZus{}attn} \PY{o}{=} \PY{n}{MultiHeadAttention}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{num\PYZus{}heads}\PY{p}{,} \PY{n}{dropout}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Feed\PYZhy{}forward network}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{feed\PYZus{}forward} \PY{o}{=} \PY{n}{PositionwiseFeedForward}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{,} \PY{n}{d\PYZus{}ff}\PY{p}{,} \PY{n}{dropout}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Layer normalization for residual connections:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm1} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{LayerNorm}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm2} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{LayerNorm}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm3} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{LayerNorm}\PY{p}{(}\PY{n}{d\PYZus{}model}\PY{p}{)}
+
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout} \PY{o}{=} \PY{n}{nn}\PY{o}{.}\PY{n}{Dropout}\PY{p}{(}\PY{n}{dropout}\PY{p}{)}
+
+    \PY{k}{def}\PY{+w}{ }\PY{n+nf}{forward}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{x}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{,}
+        \PY{n}{encoder\PYZus{}output}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{,}
+        \PY{n}{self\PYZus{}attn\PYZus{}mask}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor} \PY{o}{=} \PY{k+kc}{None}\PY{p}{,}
+        \PY{n}{cross\PYZus{}attn\PYZus{}mask}\PY{p}{:} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor} \PY{o}{=} \PY{k+kc}{None}
+    \PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{:}
+\PY{+w}{        }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{        Forward pass of decoder layer.}
+
+\PY{l+s+sd}{        :param x: Input tensor from previous decoder layer of shape}
+\PY{l+s+sd}{          (B, T\PYZus{}dec, C).}
+\PY{l+s+sd}{        :param encoder\PYZus{}output: Output from encoder of shape (B, T\PYZus{}enc, C).}
+\PY{l+s+sd}{        :param self\PYZus{}attn\PYZus{}mask: Mask for self\PYZhy{}attention to prevent looking}
+\PY{l+s+sd}{          ahead, defaults to None.}
+\PY{l+s+sd}{        :param cross\PYZus{}attn\PYZus{}mask: Mask for cross\PYZhy{}attention, defaults to None.}
+\PY{l+s+sd}{        :returns: Output tensor of same shape as input (B, T\PYZus{}dec, C).}
+\PY{l+s+sd}{        \PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{c+c1}{\PYZsh{} Masked self\PYZhy{}attention with residual connection and layer norm:}
+        \PY{n}{self\PYZus{}attn\PYZus{}output} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{self\PYZus{}attn}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{self\PYZus{}attn\PYZus{}mask}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n}{x} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout}\PY{p}{(}\PY{n}{self\PYZus{}attn\PYZus{}output}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Residual connection;}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm1}\PY{p}{(}\PY{n}{x}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Layer normalization;}
+
+        \PY{c+c1}{\PYZsh{} Cross\PYZhy{}attention with residual connection and layer norm}
+        \PY{c+c1}{\PYZsh{} Query from decoder, Key/Value from encoder}
+        \PY{n}{cross\PYZus{}attn\PYZus{}output} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cross\PYZus{}attn}\PY{p}{(}
+            \PY{n}{query}\PY{o}{=}\PY{n}{x}\PY{p}{,} \PY{n}{key}\PY{o}{=}\PY{n}{encoder\PYZus{}output}\PY{p}{,} \PY{n}{value}\PY{o}{=}\PY{n}{encoder\PYZus{}output}\PY{p}{,}
+            \PY{n}{mask}\PY{o}{=}\PY{n}{cross\PYZus{}attn\PYZus{}mask}
+        \PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n}{x} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout}\PY{p}{(}\PY{n}{cross\PYZus{}attn\PYZus{}output}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Residual connection;}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm2}\PY{p}{(}\PY{n}{x}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Layer normalization;}
+
+        \PY{c+c1}{\PYZsh{} Feed\PYZhy{}forward with residual connection and layer norm:}
+        \PY{n}{ff\PYZus{}output} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{feed\PYZus{}forward}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n}{x} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dropout}\PY{p}{(}\PY{n}{ff\PYZus{}output}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Residual connection;}
+        \PY{n}{x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{norm3}\PY{p}{(}\PY{n}{x}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Layer normalization;}
+        \PY{k}{return} \PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Initialisation et Configuration des Sous-Modules}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{def} \FunctionTok{\_\_init\_\_}\NormalTok{(}
+    \VariableTok{self}\NormalTok{,}
+\NormalTok{    d\_model: }\BuiltInTok{int}\NormalTok{,}
+\NormalTok{    num\_heads: }\BuiltInTok{int}\NormalTok{,}
+\NormalTok{    d\_ff: }\BuiltInTok{int}\NormalTok{,}
+\NormalTok{    dropout: }\BuiltInTok{float} \OperatorTok{=} \FloatTok{0.1}
+\NormalTok{) }\OperatorTok{{-}\textgreater{}} \VariableTok{None}\NormalTok{:}
+\end{Highlighting}
+\end{Shaded}
+
+L'initialisation de la couche de décodeur définit les composants
+fondamentaux qui orchestrent la transformation des représentations. La
+dimension du modèle \texttt{d\_model} fixée à 512 constitue l'espace de
+représentation unifié à travers tous les sous-modules, garantissant la
+compatibilité dimensionnelle et facilitant les connexions résiduelles.
+
+Le paramètre \texttt{num\_heads} détermine le degré de spécialisation
+attentionnelle, permettant au modèle de capturer simultanément
+différents aspects des relations contextuelles. Typiquement fixé à 8, ce
+paramètre divise l'espace de représentation en sous-espaces spécialisés
+où chaque tête d'attention se concentre sur des types spécifiques de
+dépendances linguistiques et contextuelles.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Architecture des Mécanismes d'Attention}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.self\_attn }\OperatorTok{=}\NormalTok{ MultiHeadAttention(d\_model, num\_heads, dropout)}
+\VariableTok{self}\NormalTok{.cross\_attn }\OperatorTok{=}\NormalTok{ MultiHeadAttention(d\_model, num\_heads, dropout)}
+\end{Highlighting}
+\end{Shaded}
+
+L'auto-attention masquée constitue le premier mécanisme de traitement,
+permettant à chaque position de la séquence de texte en cours de
+génération d'interagir avec les positions précédentes. Ce mécanisme
+préserve la propriété auto-régressive essentielle à la génération
+séquentielle en empêchant l'accès aux tokens futurs. Mathématiquement,
+l'auto-attention masquée s'exprime comme :
+
+\[
+\text{MaskedAttention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + M\right)V
+\]
+
+où \(M\) est une matrice masque avec \(M_{ij} = -\infty\) si \(i < j\)
+(empêchant le regard vers le futur) et \(0\) sinon. Cette formulation
+garantit que la génération de chaque token ne dépend que des tokens
+précédemment générés.
+
+L'attention croisée établit le pont crucial entre les domaines gestuel
+et linguistique. Ce mécanisme permet au décodeur de ``consulter'' les
+représentations encodées de la séquence vidéo pour chaque étape de
+génération textuelle. L'attention croisée est définie par :
+
+\[
+\text{CrossAttention}(Q, K_{enc}, V_{enc}) = \text{softmax}\left(\frac{QK_{enc}^T}{\sqrt{d_k}}\right)V_{enc}
+\]
+
+où \(Q\) provient des représentations courantes du décodeur, et
+\(K_{enc}\), \(V_{enc}\) proviennent de la sortie de l'encodeur. Ce
+mécanisme permet un alignement dynamique entre les unités textuelles
+générées et les segments gestuels pertinents.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Réseau Feed-Forward et Normalisation}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{self}\NormalTok{.feed\_forward }\OperatorTok{=}\NormalTok{ PositionwiseFeedForward(d\_model, d\_ff, dropout)}
+\VariableTok{self}\NormalTok{.norm1 }\OperatorTok{=}\NormalTok{ nn.LayerNorm(d\_model)}
+\VariableTok{self}\NormalTok{.norm2 }\OperatorTok{=}\NormalTok{ nn.LayerNorm(d\_model)  }
+\VariableTok{self}\NormalTok{.norm3 }\OperatorTok{=}\NormalTok{ nn.LayerNorm(d\_model)}
+\end{Highlighting}
+\end{Shaded}
+
+Le réseau feed-forward positionnel opère une transformation non-linéaire
+indépendante sur chaque position de la séquence. Avec une dimension
+cachée \texttt{d\_ff} typiquement fixée à 2048 (4 × d\_model), ce réseau
+introduit une capacité computationnelle additionnelle essentielle pour
+capturer des transformations complexes. L'architecture de ce sous-module
+suit la formulation :
+
+\[
+\text{FFN}(x) = W_2 \cdot \text{GELU}(W_1 x + b_1) + b_2
+\]
+
+où \(W_1 \in \mathbb{R}^{d_{model} \times d_{ff}}\),
+\(W_2 \in \mathbb{R}^{d_{ff} \times d_{model}}\), et GELU représente la
+fonction d'activation Gaussian Error Linear Unit.
+
+Les couches de normalisation (LayerNorm) stabilisent l'apprentissage en
+normalisant les activations à travers la dimension des features. Cette
+normalisation s'exprime comme :
+
+\[
+\text{LayerNorm}(x) = \frac{x - \mu}{\sigma} \cdot \gamma + \beta
+\]
+
+où \(\mu\) et \(\sigma\) sont la moyenne et l'écart-type calculés sur la
+dernière dimension, et \(\gamma\), \(\beta\) sont des paramètres
+apprenables.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  \textbf{Processus Séquentiel de Transformation}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{self\_attn\_output }\OperatorTok{=} \VariableTok{self}\NormalTok{.self\_attn(x, x, x, self\_attn\_mask)}
+\NormalTok{x }\OperatorTok{=}\NormalTok{ x }\OperatorTok{+} \VariableTok{self}\NormalTok{.dropout(self\_attn\_output)}
+\NormalTok{x }\OperatorTok{=} \VariableTok{self}\NormalTok{.norm1(x)}
+\end{Highlighting}
+\end{Shaded}
+
+La première étape de transformation applique l'auto-attention masquée
+aux représentations courantes du décodeur. Dans le contexte de la
+traduction de la langue des signes, ce mécanisme permet d'établir la
+cohérence linguistique de la séquence textuelle en cours de génération.
+Par exemple, lors de la génération du verbe dans une phrase,
+l'auto-attention masquée permet de maintenir l'accord avec le sujet déjà
+généré.
+
+La connexion résiduelle (\(x + \text{dropout}(self\_attn\_output)\))
+préserve l'information originale tout en permettant au mécanisme
+d'attention d'apporter des améliorations incrémentales. Cette approche
+atténue le problème des gradients disparaissants et facilite
+l'apprentissage de transformations profondes.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  \textbf{Attention Croisée et Alignement Geste-texte}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cross\_attn\_output }\OperatorTok{=} \VariableTok{self}\NormalTok{.cross\_attn(}
+\NormalTok{    query}\OperatorTok{=}\NormalTok{x, key}\OperatorTok{=}\NormalTok{encoder\_output, value}\OperatorTok{=}\NormalTok{encoder\_output,}
+\NormalTok{    mask}\OperatorTok{=}\NormalTok{cross\_attn\_mask}
+\NormalTok{)}
+\NormalTok{x }\OperatorTok{=}\NormalTok{ x }\OperatorTok{+} \VariableTok{self}\NormalTok{.dropout(cross\_attn\_output)}
+\NormalTok{x }\OperatorTok{=} \VariableTok{self}\NormalTok{.norm2(x)}
+\end{Highlighting}
+\end{Shaded}
+
+L'attention croisée représente l'étape cruciale d'intégration des
+informations gestuelles dans le processus de génération textuelle. Ce
+mécanisme permet au décodeur d'aligner dynamiquement chaque unité
+textuelle générée avec les segments pertinents de la séquence vidéo
+encodée.
+
+Dans le contexte pratique de la traduction, lorsque le décodeur génère
+un mot comme ``maison'', l'attention croisée lui permet de se concentrer
+sur les frames vidéo où les mains forment le geste correspondant au toit
+caractéristique. De même, pour générer des adverbes d'intensité comme
+``vraiment'' ou ``beaucoup'', le mécanisme peut s'aligner sur les frames
+montrant une amplitude gestuelle accentuée.
+
+Le masque d'attention croisée (\texttt{cross\_attn\_mask}) permet
+d'ignorer les positions de padding dans la séquence encodée, optimisant
+ainsi le calcul attentionnel sur les seules régions informationnelles.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{5}
+\tightlist
+\item
+  \textbf{Raffinement Représentationnel par Feed-Forward}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ff\_output }\OperatorTok{=} \VariableTok{self}\NormalTok{.feed\_forward(x)}
+\NormalTok{x }\OperatorTok{=}\NormalTok{ x }\OperatorTok{+} \VariableTok{self}\NormalTok{.dropout(ff\_output)}
+\NormalTok{x }\OperatorTok{=} \VariableTok{self}\NormalTok{.norm3(x)}
+\end{Highlighting}
+\end{Shaded}
+
+La dernière étape applique le réseau feed-forward positionnel pour
+enrichir les représentations avec des transformations non-linéaires
+complexes. Ce sous-module opère indépendamment sur chaque position,
+permettant un raffinement local des représentations tout en maintenant
+l'information contextuelle capturée par les mécanismes d'attention
+précédents.
+
+Dans le contexte de la génération textuelle pour la traduction de la
+langue des signes, cette étape permet de transformer les représentations
+alignées geste-texte en représentations linguistiquement riches,
+préparant ainsi le terrain pour la génération du token suivant. Par
+exemple, après l'alignement avec les gestes d'affection, le réseau
+feed-forward peut enrichir la représentation pour favoriser la
+génération de termes affectueux spécifiques.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\tightlist
+\item
+  \textbf{Dynamique d'Apprentissage et Régularisation}
+\end{enumerate}
+
+L'utilisation systématique du dropout sur chaque sortie de sous-module
+introduit une régularisation stochastique essentielle pour prévenir le
+surapprentissage. Le taux de dropout typique de 0.1 désactive
+aléatoirement 10\% des unités pendant l'entraînement, forçant le modèle
+à développer des représentations redondantes et robustes.
+
+Les connexions résiduelles successives créent des chemins de gradient
+directs à travers les multiples transformations, atténuant le problème
+des gradients disparaissants et permettant un apprentissage efficace
+même avec des réseaux profonds. Cette architecture facilite la
+circulation de l'information et des gradients à travers les multiples
+couches de traitement.
+
+\subsubsection{Applications à la Traduction de la Langue des
+Signes}\label{applications-uxe0-la-traduction-de-la-langue-des-signes}
+
+La conception de la couche de décodeur est particulièrement adaptée aux
+défis spécifiques de la traduction de la langue des signes. L'attention
+croisée permet de gérer l'asynchronisme naturel entre les séquences
+gestuelles et textuelles, tandis que l'auto-attention masquée assure la
+cohérence grammaticale des phrases générées.
+
+La capacité à capturer des relations complexes à longue distance est
+essentielle pour traduire les structures grammaticales spécifiques à la
+langue des signes, où l'information est souvent distribuée
+temporellement. L'architecture multi-têtes permet de modéliser
+simultanément différents aspects des relations contextuelles, depuis les
+accords grammaticaux jusqu'aux relations sémantiques profondes.
+
+    \section{Configuration Typique du modèle pour la Langue des
+Signes}\label{configuration-typique-du-moduxe8le-pour-la-langue-des-signes}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2444}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4222}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Paramètre
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Valeur Recommandée
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Justification
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{input\_dim} & \(126\) & \(42\) points MediaPipe \$ \times 3\$
+coordonnées \((x, y, z)\) \\
+\texttt{d\_model} & \(512\) & Bon compromis expressivité/calcul \\
+\texttt{num\_heads} & \(8\) & Divise 512. Capture divers aspects des
+gestes \\
+\texttt{num\_layers} & \(6\) & Suffisant pour modéliser la complexité
+temporelle \\
+\texttt{d\_ff} & \(2048\) & \(4 \times d_{model}\), standard pour les
+Transformers \\
+\texttt{max\_seq\_len} & \(250\) & Supporte \(5\) secondes à raisons de
+\(50\) fps \\
+\end{longtable}
+
+Avantages pour la Traduction de Langue des Signes :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Capture des Dépendances Temporelles} : Comprend les relations
+  entre gestes séparés dans le temps
+\item
+  \textbf{Traitement Parallèle} : Analyse toute la séquence
+  simultanément (vs RNN séquentiels)
+\item
+  \textbf{Robustesse aux Variations} : S'adapte aux différences de
+  vitesse et de style entre signeurs
+\item
+  \textbf{Contextualisation Rich} : Chaque geste est interprété dans le
+  contexte de l'ensemble du message
+\end{enumerate}
+
+Cette architecture permet de transformer une séquence vidéo brute en une
+représentation vectorielle structurée qui capture toute la richesse
+linguistique et temporelle de la langue des signes, préparant ainsi le
+terrain pour la phase de décodage vers la langue naturelle.
+
+    \section{Testons l'inférence}\label{testons-linfuxe9rence}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nd}{@dataclass}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{EncoderConfig}\PY{p}{:}
+    \PY{n}{batch\PYZus{}size}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{4}  \PY{c+c1}{\PYZsh{} B: Number of sequences in batch;}
+    \PY{n}{max\PYZus{}seq\PYZus{}len}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{250}  \PY{c+c1}{\PYZsh{} T: Number of frames in sequence;}
+    \PY{n}{input\PYZus{}dim}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{2048}  \PY{c+c1}{\PYZsh{} C: Size of landmark feature vector from each image;}
+    \PY{n}{d\PYZus{}model}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{512}  \PY{c+c1}{\PYZsh{} Model dimension (embedding size);}
+    \PY{n}{num\PYZus{}heads}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{8}  \PY{c+c1}{\PYZsh{} Number of attention heads;}
+    \PY{n}{num\PYZus{}layers}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{6}  \PY{c+c1}{\PYZsh{} Number of encoder layers;}
+    \PY{n}{d\PYZus{}ff}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{2048}  \PY{c+c1}{\PYZsh{} Hidden dimension in feed\PYZhy{}forward network;}
+    \PY{n}{dropout}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mf}{0.1}  \PY{c+c1}{\PYZsh{} Dropout rate;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nd}{@dataclass}
+\PY{k}{class}\PY{+w}{ }\PY{n+nc}{DecoderConfig}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Configuration dataclass for Transformer decoder.}
+
+\PY{l+s+sd}{    This class holds all the hyperparameters needed to configure}
+\PY{l+s+sd}{    the Transformer decoder.}
+
+\PY{l+s+sd}{    :param batch\PYZus{}size: Number of sequences in batch, defaults to 8.}
+\PY{l+s+sd}{    :param max\PYZus{}seq\PYZus{}len: Maximum sequence length for decoder, defaults to 100.}
+\PY{l+s+sd}{    :param output\PYZus{}dim: Dimension of output features, defaults to 256.}
+\PY{l+s+sd}{    :param d\PYZus{}model: Model dimension (embedding size), defaults to 512.}
+\PY{l+s+sd}{    :param num\PYZus{}heads: Number of attention heads, defaults to 8.}
+\PY{l+s+sd}{    :param num\PYZus{}layers: Number of decoder layers, defaults to 6.}
+\PY{l+s+sd}{    :param d\PYZus{}ff: Hidden dimension in feed\PYZhy{}forward network, defaults to 2048.}
+\PY{l+s+sd}{    :param dropout: Dropout rate, defaults to 0.1.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{batch\PYZus{}size}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{1}
+    \PY{n}{max\PYZus{}seq\PYZus{}len}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{1024}
+    \PY{n}{output\PYZus{}dim}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{130\PYZus{}000}
+    \PY{n}{d\PYZus{}model}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{512}
+    \PY{n}{num\PYZus{}heads}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{8}
+    \PY{n}{num\PYZus{}layers}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{6}
+    \PY{n}{d\PYZus{}ff}\PY{p}{:} \PY{n+nb}{int} \PY{o}{=} \PY{l+m+mi}{2048}
+    \PY{n}{dropout}\PY{p}{:} \PY{n+nb}{float} \PY{o}{=} \PY{l+m+mf}{0.1}
+\end{Verbatim}
+\end{tcolorbox}
+
+    La fonction suivante génère un masque d'attention triangulaire inférieur
+essentiel au fonctionnement auto-régressif du décodeur. Ce masque
+empêche chaque position de la séquence de ``regarder'' vers les
+positions futures, préservant ainsi la propriété fondamentale de
+génération séquentielle où chaque token ne peut dépendre que des tokens
+précédemment générés. En pratique, cette matrice binaire de forme
+(seq\_len, seq\_len) contient des 1 dans sa partie triangulaire
+inférieure (incluant la diagonale) et des 0 dans sa partie triangulaire
+supérieure, forçant mécaniquement le modèle à respecter l'ordre temporel
+lors du calcul des scores d'attention. Cette contrainte est cruciale
+pendant l'entraînement teacher forcing où la séquence cible complète est
+disponible, mais où le modèle doit apprendre à générer de manière
+séquentielle comme il le fera pendant l'inférence.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{create\PYZus{}look\PYZus{}ahead\PYZus{}mask}\PY{p}{(}\PY{n}{seq\PYZus{}len}\PY{p}{:} \PY{n+nb}{int}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{\PYZgt{}} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    Create look\PYZhy{}ahead mask for decoder self\PYZhy{}attention.}
+
+\PY{l+s+sd}{    This mask prevents the decoder from attending to future positions}
+\PY{l+s+sd}{    during training when the entire target sequence is available.}
+
+\PY{l+s+sd}{    :param seq\PYZus{}len: Length of the target sequence.}
+\PY{l+s+sd}{    :returns: Look\PYZhy{}ahead mask tensor of shape (seq\PYZus{}len, seq\PYZus{}len).}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{c+c1}{\PYZsh{} Create lower triangular matrix (ones in lower triangle, zeros in upper):}
+    \PY{n}{mask} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{tril}\PY{p}{(}\PY{n}{torch}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{seq\PYZus{}len}\PY{p}{,} \PY{n}{seq\PYZus{}len}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{mask}
+\end{Verbatim}
+\end{tcolorbox}
+
+    La fonction suivante fournit une analyse détaillée de l'architecture et
+des caractéristiques computationnelles d'un modèle PyTorch. En utilisant
+la bibliothèque \texttt{torchsummary}, elle génère un rapport complet
+incluant la structure hiérarchique des couches, le nombre de paramètres
+entraînables, la consommation mémoire et la forme des tenseurs à chaque
+étape de traitement. Le paramètre \texttt{depth} permet de contrôler le
+niveau de détail de l'analyse, tandis que la mesure du temps d'inférence
+offre une estimation des performances en millisecondes. Cette fonction
+est particulièrement utile pour debuguer l'architecture, optimiser
+l'utilisation mémoire et comparer différentes configurations de modèles
+dans le contexte de la traduction de langue des signes où l'efficacité
+computationnelle est cruciale pour le traitement en temps réel des
+séquences vidéo.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{print\PYZus{}model\PYZus{}summary}\PY{p}{(}
+    \PY{n}{model}\PY{p}{:} \PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{,}
+    \PY{n}{input\PYZus{}data}\PY{p}{:} \PY{n+nb}{tuple}\PY{p}{,}
+    \PY{n}{depth}\PY{p}{:} \PY{n+nb}{int}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,}
+    \PY{n}{device}\PY{o}{=}\PY{k+kc}{None}
+\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+sd}{    This function to make summary for the model instance received}
+\PY{l+s+sd}{    by arguments.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+    \PY{n}{start} \PY{o}{=} \PY{n}{tm}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{state} \PY{o}{=} \PY{n}{summary}\PY{p}{(}
+        \PY{n}{model}\PY{o}{=}\PY{n}{model}\PY{p}{,} \PY{n}{input\PYZus{}data}\PY{o}{=}\PY{n}{input\PYZus{}data}\PY{p}{,} \PY{n}{device}\PY{o}{=}\PY{n}{device}\PY{p}{,} \PY{n}{depth}\PY{o}{=}\PY{n}{depth}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{l+m+mi}{1}
+    \PY{p}{)}
+    \PY{n}{end} \PY{o}{=} \PY{n}{tm}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+    \PY{n}{inference\PYZus{}time} \PY{o}{=} \PY{p}{(}\PY{n}{end} \PY{o}{\PYZhy{}} \PY{n}{start}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{1000}
+    \PY{k}{return} \PY{n}{state}\PY{p}{,} \PY{n}{inference\PYZus{}time}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Hyperparameters}
+\PY{n}{model\PYZus{}config} \PY{o}{=} \PY{n}{EncoderConfig}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Create encoder}
+\PY{n}{encoder} \PY{o}{=} \PY{n}{TransformerEncoder}\PY{p}{(}
+    \PY{n}{input\PYZus{}dim}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{input\PYZus{}dim}\PY{p}{,}
+    \PY{n}{d\PYZus{}model}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{d\PYZus{}model}\PY{p}{,}
+    \PY{n}{num\PYZus{}heads}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{num\PYZus{}heads}\PY{p}{,}
+    \PY{n}{num\PYZus{}layers}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{num\PYZus{}layers}\PY{p}{,}
+    \PY{n}{d\PYZus{}ff}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{d\PYZus{}ff}\PY{p}{,}
+    \PY{n}{dropout}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{dropout}
+\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Test with random input (B, T, C):}
+\PY{n}{input\PYZus{}shape} \PY{o}{=} \PY{p}{(}
+    \PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{max\PYZus{}seq\PYZus{}len}\PY{p}{,}
+    \PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{input\PYZus{}dim}
+\PY{p}{)}
+\PY{n}{x} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{n}{input\PYZus{}shape}\PY{p}{)}
+\PY{n}{start} \PY{o}{=} \PY{n}{tm}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+\PY{n}{output} \PY{o}{=} \PY{n}{encoder}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\PY{n}{end} \PY{o}{=} \PY{n}{tm}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}
+\PY{n}{inference\PYZus{}time} \PY{o}{=} \PY{p}{(}\PY{n}{end} \PY{o}{\PYZhy{}} \PY{n}{start}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{1000}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Inference time: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{inference\PYZus{}time}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ ms.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{print\PYZus{}model\PYZus{}summary}\PY{p}{(}\PY{n}{encoder}\PY{p}{,} \PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Print shapes and model information}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Transformer Encoder Example}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}} \PY{o}{*} \PY{l+m+mi}{80}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Input shape: }\PY{l+s+si}{\PYZob{}}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Output shape: }\PY{l+s+si}{\PYZob{}}\PY{n}{output}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of parameters: }\PY{l+s+s2}{\PYZdq{}}
+    \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{p}\PY{o}{.}\PY{n}{numel}\PY{p}{(}\PY{p}{)}\PY{+w}{ }\PY{k}{for}\PY{+w}{ }\PY{n}{p}\PY{+w}{ }\PY{o+ow}{in}\PY{+w}{ }\PY{n}{encoder}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{,}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Input projection: }\PY{l+s+si}{\PYZob{}}\PY{n}{encoder}\PY{o}{.}\PY{n}{input\PYZus{}projection}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of encoder layers: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{encoder}\PY{o}{.}\PY{n}{layers}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Positional encoding: }\PY{l+s+si}{\PYZob{}}\PY{n}{encoder}\PY{o}{.}\PY{n}{pos\PYZus{}encoding}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2025-10-29 23:37:26,944 - - INFO - Inference time: 6316.2291049957275 ms.
+2025-10-29 23:37:27,884 - - INFO - Transformer Encoder Example
+2025-10-29 23:37:27,886 - - INFO -
+================================================================================
+2025-10-29 23:37:27,888 - - INFO - Input shape: torch.Size([4, 250, 2048])
+2025-10-29 23:37:27,889 - - INFO - Output shape: torch.Size([4, 250, 512])
+2025-10-29 23:37:27,894 - - INFO - Number of parameters: 19,955,200
+2025-10-29 23:37:27,899 - - INFO - Input projection: Linear(in\_features=2048,
+out\_features=512, bias=True)
+2025-10-29 23:37:27,901 - - INFO - Number of encoder layers: 6
+2025-10-29 23:37:27,903 - - INFO - Positional encoding: PositionalEncoding()
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+================================================================================
+===============
+Layer (type:depth-idx)                        Output Shape              Param \#
+================================================================================
+===============
+TransformerEncoder                            [4, 250, 512]             --
+├─Linear: 1-1                                 [4, 250, 512]
+1,049,088
+├─PositionalEncoding: 1-2                     [4, 250, 512]             --
+├─Dropout: 1-3                                [4, 250, 512]             --
+├─ModuleList: 1-4                             --                        --
+│    └─EncoderLayer: 2-1                      [4, 250, 512]             --
+│    │    └─MultiHeadAttention: 3-1           [4, 250, 512]             --
+│    │    │    └─Linear: 4-1                  [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-2                  [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-3                  [4, 250, 512]             262,144
+│    │    │    └─Dropout: 4-4                 [4, 8, 250, 250]          --
+│    │    │    └─Linear: 4-5                  [4, 250, 512]             262,656
+│    │    └─Dropout: 3-2                      [4, 250, 512]             --
+│    │    └─LayerNorm: 3-3                    [4, 250, 512]             1,024
+│    │    └─PositionwiseFeedForward: 3-4      [4, 250, 512]             --
+│    │    │    └─Linear: 4-6                  [4, 250, 2048]
+1,050,624
+│    │    │    └─GELU: 4-7                    [4, 250, 2048]            --
+│    │    │    └─Dropout: 4-8                 [4, 250, 2048]            --
+│    │    │    └─Linear: 4-9                  [4, 250, 512]
+1,049,088
+│    │    └─Dropout: 3-5                      [4, 250, 512]             --
+│    │    └─LayerNorm: 3-6                    [4, 250, 512]             1,024
+│    └─EncoderLayer: 2-2                      [4, 250, 512]             --
+│    │    └─MultiHeadAttention: 3-7           [4, 250, 512]             --
+│    │    │    └─Linear: 4-10                 [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-11                 [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-12                 [4, 250, 512]             262,144
+│    │    │    └─Dropout: 4-13                [4, 8, 250, 250]          --
+│    │    │    └─Linear: 4-14                 [4, 250, 512]             262,656
+│    │    └─Dropout: 3-8                      [4, 250, 512]             --
+│    │    └─LayerNorm: 3-9                    [4, 250, 512]             1,024
+│    │    └─PositionwiseFeedForward: 3-10     [4, 250, 512]             --
+│    │    │    └─Linear: 4-15                 [4, 250, 2048]
+1,050,624
+│    │    │    └─GELU: 4-16                   [4, 250, 2048]            --
+│    │    │    └─Dropout: 4-17                [4, 250, 2048]            --
+│    │    │    └─Linear: 4-18                 [4, 250, 512]
+1,049,088
+│    │    └─Dropout: 3-11                     [4, 250, 512]             --
+│    │    └─LayerNorm: 3-12                   [4, 250, 512]             1,024
+│    └─EncoderLayer: 2-3                      [4, 250, 512]             --
+│    │    └─MultiHeadAttention: 3-13          [4, 250, 512]             --
+│    │    │    └─Linear: 4-19                 [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-20                 [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-21                 [4, 250, 512]             262,144
+│    │    │    └─Dropout: 4-22                [4, 8, 250, 250]          --
+│    │    │    └─Linear: 4-23                 [4, 250, 512]             262,656
+│    │    └─Dropout: 3-14                     [4, 250, 512]             --
+│    │    └─LayerNorm: 3-15                   [4, 250, 512]             1,024
+│    │    └─PositionwiseFeedForward: 3-16     [4, 250, 512]             --
+│    │    │    └─Linear: 4-24                 [4, 250, 2048]
+1,050,624
+│    │    │    └─GELU: 4-25                   [4, 250, 2048]            --
+│    │    │    └─Dropout: 4-26                [4, 250, 2048]            --
+│    │    │    └─Linear: 4-27                 [4, 250, 512]
+1,049,088
+│    │    └─Dropout: 3-17                     [4, 250, 512]             --
+│    │    └─LayerNorm: 3-18                   [4, 250, 512]             1,024
+│    └─EncoderLayer: 2-4                      [4, 250, 512]             --
+│    │    └─MultiHeadAttention: 3-19          [4, 250, 512]             --
+│    │    │    └─Linear: 4-28                 [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-29                 [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-30                 [4, 250, 512]             262,144
+│    │    │    └─Dropout: 4-31                [4, 8, 250, 250]          --
+│    │    │    └─Linear: 4-32                 [4, 250, 512]             262,656
+│    │    └─Dropout: 3-20                     [4, 250, 512]             --
+│    │    └─LayerNorm: 3-21                   [4, 250, 512]             1,024
+│    │    └─PositionwiseFeedForward: 3-22     [4, 250, 512]             --
+│    │    │    └─Linear: 4-33                 [4, 250, 2048]
+1,050,624
+│    │    │    └─GELU: 4-34                   [4, 250, 2048]            --
+│    │    │    └─Dropout: 4-35                [4, 250, 2048]            --
+│    │    │    └─Linear: 4-36                 [4, 250, 512]
+1,049,088
+│    │    └─Dropout: 3-23                     [4, 250, 512]             --
+│    │    └─LayerNorm: 3-24                   [4, 250, 512]             1,024
+│    └─EncoderLayer: 2-5                      [4, 250, 512]             --
+│    │    └─MultiHeadAttention: 3-25          [4, 250, 512]             --
+│    │    │    └─Linear: 4-37                 [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-38                 [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-39                 [4, 250, 512]             262,144
+│    │    │    └─Dropout: 4-40                [4, 8, 250, 250]          --
+│    │    │    └─Linear: 4-41                 [4, 250, 512]             262,656
+│    │    └─Dropout: 3-26                     [4, 250, 512]             --
+│    │    └─LayerNorm: 3-27                   [4, 250, 512]             1,024
+│    │    └─PositionwiseFeedForward: 3-28     [4, 250, 512]             --
+│    │    │    └─Linear: 4-42                 [4, 250, 2048]
+1,050,624
+│    │    │    └─GELU: 4-43                   [4, 250, 2048]            --
+│    │    │    └─Dropout: 4-44                [4, 250, 2048]            --
+│    │    │    └─Linear: 4-45                 [4, 250, 512]
+1,049,088
+│    │    └─Dropout: 3-29                     [4, 250, 512]             --
+│    │    └─LayerNorm: 3-30                   [4, 250, 512]             1,024
+│    └─EncoderLayer: 2-6                      [4, 250, 512]             --
+│    │    └─MultiHeadAttention: 3-31          [4, 250, 512]             --
+│    │    │    └─Linear: 4-46                 [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-47                 [4, 250, 512]             262,144
+│    │    │    └─Linear: 4-48                 [4, 250, 512]             262,144
+│    │    │    └─Dropout: 4-49                [4, 8, 250, 250]          --
+│    │    │    └─Linear: 4-50                 [4, 250, 512]             262,656
+│    │    └─Dropout: 3-32                     [4, 250, 512]             --
+│    │    └─LayerNorm: 3-33                   [4, 250, 512]             1,024
+│    │    └─PositionwiseFeedForward: 3-34     [4, 250, 512]             --
+│    │    │    └─Linear: 4-51                 [4, 250, 2048]
+1,050,624
+│    │    │    └─GELU: 4-52                   [4, 250, 2048]            --
+│    │    │    └─Dropout: 4-53                [4, 250, 2048]            --
+│    │    │    └─Linear: 4-54                 [4, 250, 512]
+1,049,088
+│    │    └─Dropout: 3-35                     [4, 250, 512]             --
+│    │    └─LayerNorm: 3-36                   [4, 250, 512]             1,024
+├─LayerNorm: 1-5                              [4, 250, 512]             1,024
+================================================================================
+===============
+Total params: 19,955,200
+Trainable params: 19,955,200
+Non-trainable params: 0
+Total mult-adds (M): 79.82
+================================================================================
+===============
+Input size (MB): 8.19
+Forward/backward pass size (MB): 278.53
+Params size (MB): 79.82
+Estimated Total Size (MB): 366.54
+================================================================================
+===============
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Configuration:}
+\PY{n}{model\PYZus{}config} \PY{o}{=} \PY{n}{DecoderConfig}\PY{p}{(}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Create decoder instance:}
+\PY{n}{decoder} \PY{o}{=} \PY{n}{TransformerDecoder}\PY{p}{(}
+    \PY{n}{output\PYZus{}dim}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{output\PYZus{}dim}\PY{p}{,}
+    \PY{n}{d\PYZus{}model}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{d\PYZus{}model}\PY{p}{,}
+    \PY{n}{num\PYZus{}heads}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{num\PYZus{}heads}\PY{p}{,}
+    \PY{n}{num\PYZus{}layers}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{num\PYZus{}layers}\PY{p}{,}
+    \PY{n}{d\PYZus{}ff}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{d\PYZus{}ff}\PY{p}{,}
+    \PY{n}{dropout}\PY{o}{=}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{dropout}
+\PY{p}{)}
+\PY{n}{decoder}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Create sample tensors}
+\PY{c+c1}{\PYZsh{} Target sequence (what we want to generate)}
+\PY{n}{target\PYZus{}seq\PYZus{}shape} \PY{o}{=} \PY{p}{(}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{max\PYZus{}seq\PYZus{}len}\PY{p}{)}
+\PY{n}{target\PYZus{}seq} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{output\PYZus{}dim} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{target\PYZus{}seq\PYZus{}shape}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Encoder output (from the encoder module)}
+\PY{n}{encoder\PYZus{}output\PYZus{}shape} \PY{o}{=} \PY{p}{(}
+    \PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{batch\PYZus{}size}\PY{p}{,} \PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{max\PYZus{}seq\PYZus{}len}\PY{p}{,} \PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{d\PYZus{}model}
+\PY{p}{)}
+\PY{n}{encoder\PYZus{}output} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{n}{encoder\PYZus{}output\PYZus{}shape}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Create look\PYZhy{}ahead mask for decoder self\PYZhy{}attention}
+\PY{n}{look\PYZus{}ahead\PYZus{}mask} \PY{o}{=} \PY{n}{create\PYZus{}look\PYZus{}ahead\PYZus{}mask}\PY{p}{(}\PY{n}{model\PYZus{}config}\PY{o}{.}\PY{n}{max\PYZus{}seq\PYZus{}len}\PY{p}{)}
+\PY{n}{look\PYZus{}ahead\PYZus{}mask} \PY{o}{=} \PY{n}{look\PYZus{}ahead\PYZus{}mask} \PYZbs{}
+    \PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)} \PYZbs{}
+    \PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}  \PY{c+c1}{\PYZsh{} Add batch and head dimensions;}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{look\PYZus{}ahead\PYZus{}mask shape: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{look\PYZus{}ahead\PYZus{}mask}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{look\PYZus{}ahead\PYZus{}mask:}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{repr}\PY{p}{(}\PY{n}{look\PYZus{}ahead\PYZus{}mask}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Forward pass through decoder:}
+\PY{n}{output} \PY{o}{=} \PY{n}{decoder}\PY{p}{(}
+    \PY{n}{x}\PY{o}{=}\PY{n}{target\PYZus{}seq}\PY{p}{,} \PY{n}{encoder\PYZus{}output}\PY{o}{=}\PY{n}{encoder\PYZus{}output}\PY{p}{,}
+    \PY{n}{self\PYZus{}attn\PYZus{}mask}\PY{o}{=}\PY{n}{look\PYZus{}ahead\PYZus{}mask}
+\PY{p}{)}
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{inference\PYZus{}time} \PY{o}{=} \PY{n}{print\PYZus{}model\PYZus{}summary}\PY{p}{(}
+    \PY{n}{decoder}\PY{p}{,} \PY{p}{(}\PY{n}{target\PYZus{}seq}\PY{p}{,} \PY{n}{encoder\PYZus{}output}\PY{p}{)}
+\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Inference time: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{inference\PYZus{}time}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ ms.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Print shapes and model information}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Transformer Decoder Example}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{=}\PY{l+s+s2}{\PYZdq{}} \PY{o}{*} \PY{l+m+mi}{80}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Target sequence shape: }\PY{l+s+si}{\PYZob{}}\PY{n}{target\PYZus{}seq}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Encoder output shape: }\PY{l+s+si}{\PYZob{}}\PY{n}{encoder\PYZus{}output}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Decoder output shape: }\PY{l+s+si}{\PYZob{}}\PY{n}{output}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Look\PYZhy{}ahead mask shape: }\PY{l+s+si}{\PYZob{}}\PY{n}{look\PYZus{}ahead\PYZus{}mask}\PY{o}{.}\PY{n}{shape}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}
+    \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of parameters: }\PY{l+s+s2}{\PYZdq{}}
+    \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{p}\PY{o}{.}\PY{n}{numel}\PY{p}{(}\PY{p}{)}\PY{+w}{ }\PY{k}{for}\PY{+w}{ }\PY{n}{p}\PY{+w}{ }\PY{o+ow}{in}\PY{+w}{ }\PY{n}{decoder}\PY{o}{.}\PY{n}{parameters}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{,}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}
+\PY{p}{)}
+\PY{n}{LOGGER}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of decoder layers: }\PY{l+s+si}{\PYZob{}}\PY{n+nb}{len}\PY{p}{(}\PY{n}{decoder}\PY{o}{.}\PY{n}{layers}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2025-10-29 23:37:35,886 - - INFO - look\_ahead\_mask shape: torch.Size([1, 1,
+1024, 1024])
+2025-10-29 23:37:35,936 - - INFO - look\_ahead\_mask:
+tensor([[[[1., 0., 0.,  {\ldots}, 0., 0., 0.],
+          [1., 1., 0.,  {\ldots}, 0., 0., 0.],
+          [1., 1., 1.,  {\ldots}, 0., 0., 0.],
+          {\ldots},
+          [1., 1., 1.,  {\ldots}, 1., 0., 0.],
+          [1., 1., 1.,  {\ldots}, 1., 1., 0.],
+          [1., 1., 1.,  {\ldots}, 1., 1., 1.]]]])
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+torch.Size([1, 1024, 512])
+torch.Size([1, 1024, 512])
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+2025-10-29 23:37:47,766 - - INFO - Inference time: 3956.8819999694824 ms.
+2025-10-29 23:37:47,768 - - INFO - Transformer Decoder Example
+2025-10-29 23:37:47,769 - - INFO -
+================================================================================
+2025-10-29 23:37:47,771 - - INFO - Target sequence shape: torch.Size([1, 1024])
+2025-10-29 23:37:47,772 - - INFO - Encoder output shape: torch.Size([1, 1024,
+512])
+2025-10-29 23:37:47,775 - - INFO - Decoder output shape: torch.Size([1, 1024,
+130000])
+2025-10-29 23:37:47,776 - - INFO - Look-ahead mask shape: torch.Size([1, 1,
+1024, 1024])
+2025-10-29 23:37:47,779 - - INFO - Number of parameters: 158,455,760
+2025-10-29 23:37:47,784 - - INFO - Number of decoder layers: 6
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+================================================================================
+===============
+Layer (type:depth-idx)                        Output Shape              Param \#
+================================================================================
+===============
+TransformerDecoder                            [1, 1024, 130000]         --
+├─Embedding: 1-1                              [1, 1024, 512]
+66,560,000
+├─PositionalEncoding: 1-2                     [1, 1024, 512]            --
+├─Dropout: 1-3                                [1, 1024, 512]            --
+├─ModuleList: 1-4                             --                        --
+│    └─DecoderLayer: 2-1                      [1, 1024, 512]            --
+│    │    └─MultiHeadAttention: 3-1           [1, 1024, 512]            --
+│    │    │    └─Linear: 4-1                  [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-2                  [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-3                  [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-4                 [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-5                  [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-2                      [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-3                    [1, 1024, 512]            1,024
+│    │    └─MultiHeadAttention: 3-4           [1, 1024, 512]            --
+│    │    │    └─Linear: 4-6                  [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-7                  [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-8                  [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-9                 [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-10                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-5                      [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-6                    [1, 1024, 512]            1,024
+│    │    └─PositionwiseFeedForward: 3-7      [1, 1024, 512]            --
+│    │    │    └─Linear: 4-11                 [1, 1024, 2048]
+1,050,624
+│    │    │    └─GELU: 4-12                   [1, 1024, 2048]           --
+│    │    │    └─Dropout: 4-13                [1, 1024, 2048]           --
+│    │    │    └─Linear: 4-14                 [1, 1024, 512]
+1,049,088
+│    │    └─Dropout: 3-8                      [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-9                    [1, 1024, 512]            1,024
+│    └─DecoderLayer: 2-2                      [1, 1024, 512]            --
+│    │    └─MultiHeadAttention: 3-10          [1, 1024, 512]            --
+│    │    │    └─Linear: 4-15                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-16                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-17                 [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-18                [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-19                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-11                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-12                   [1, 1024, 512]            1,024
+│    │    └─MultiHeadAttention: 3-13          [1, 1024, 512]            --
+│    │    │    └─Linear: 4-20                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-21                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-22                 [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-23                [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-24                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-14                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-15                   [1, 1024, 512]            1,024
+│    │    └─PositionwiseFeedForward: 3-16     [1, 1024, 512]            --
+│    │    │    └─Linear: 4-25                 [1, 1024, 2048]
+1,050,624
+│    │    │    └─GELU: 4-26                   [1, 1024, 2048]           --
+│    │    │    └─Dropout: 4-27                [1, 1024, 2048]           --
+│    │    │    └─Linear: 4-28                 [1, 1024, 512]
+1,049,088
+│    │    └─Dropout: 3-17                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-18                   [1, 1024, 512]            1,024
+│    └─DecoderLayer: 2-3                      [1, 1024, 512]            --
+│    │    └─MultiHeadAttention: 3-19          [1, 1024, 512]            --
+│    │    │    └─Linear: 4-29                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-30                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-31                 [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-32                [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-33                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-20                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-21                   [1, 1024, 512]            1,024
+│    │    └─MultiHeadAttention: 3-22          [1, 1024, 512]            --
+│    │    │    └─Linear: 4-34                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-35                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-36                 [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-37                [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-38                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-23                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-24                   [1, 1024, 512]            1,024
+│    │    └─PositionwiseFeedForward: 3-25     [1, 1024, 512]            --
+│    │    │    └─Linear: 4-39                 [1, 1024, 2048]
+1,050,624
+│    │    │    └─GELU: 4-40                   [1, 1024, 2048]           --
+│    │    │    └─Dropout: 4-41                [1, 1024, 2048]           --
+│    │    │    └─Linear: 4-42                 [1, 1024, 512]
+1,049,088
+│    │    └─Dropout: 3-26                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-27                   [1, 1024, 512]            1,024
+│    └─DecoderLayer: 2-4                      [1, 1024, 512]            --
+│    │    └─MultiHeadAttention: 3-28          [1, 1024, 512]            --
+│    │    │    └─Linear: 4-43                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-44                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-45                 [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-46                [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-47                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-29                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-30                   [1, 1024, 512]            1,024
+│    │    └─MultiHeadAttention: 3-31          [1, 1024, 512]            --
+│    │    │    └─Linear: 4-48                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-49                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-50                 [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-51                [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-52                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-32                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-33                   [1, 1024, 512]            1,024
+│    │    └─PositionwiseFeedForward: 3-34     [1, 1024, 512]            --
+│    │    │    └─Linear: 4-53                 [1, 1024, 2048]
+1,050,624
+│    │    │    └─GELU: 4-54                   [1, 1024, 2048]           --
+│    │    │    └─Dropout: 4-55                [1, 1024, 2048]           --
+│    │    │    └─Linear: 4-56                 [1, 1024, 512]
+1,049,088
+│    │    └─Dropout: 3-35                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-36                   [1, 1024, 512]            1,024
+│    └─DecoderLayer: 2-5                      [1, 1024, 512]            --
+│    │    └─MultiHeadAttention: 3-37          [1, 1024, 512]            --
+│    │    │    └─Linear: 4-57                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-58                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-59                 [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-60                [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-61                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-38                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-39                   [1, 1024, 512]            1,024
+│    │    └─MultiHeadAttention: 3-40          [1, 1024, 512]            --
+│    │    │    └─Linear: 4-62                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-63                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-64                 [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-65                [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-66                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-41                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-42                   [1, 1024, 512]            1,024
+│    │    └─PositionwiseFeedForward: 3-43     [1, 1024, 512]            --
+│    │    │    └─Linear: 4-67                 [1, 1024, 2048]
+1,050,624
+│    │    │    └─GELU: 4-68                   [1, 1024, 2048]           --
+│    │    │    └─Dropout: 4-69                [1, 1024, 2048]           --
+│    │    │    └─Linear: 4-70                 [1, 1024, 512]
+1,049,088
+│    │    └─Dropout: 3-44                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-45                   [1, 1024, 512]            1,024
+│    └─DecoderLayer: 2-6                      [1, 1024, 512]            --
+│    │    └─MultiHeadAttention: 3-46          [1, 1024, 512]            --
+│    │    │    └─Linear: 4-71                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-72                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-73                 [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-74                [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-75                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-47                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-48                   [1, 1024, 512]            1,024
+│    │    └─MultiHeadAttention: 3-49          [1, 1024, 512]            --
+│    │    │    └─Linear: 4-76                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-77                 [1, 1024, 512]            262,144
+│    │    │    └─Linear: 4-78                 [1, 1024, 512]            262,144
+│    │    │    └─Dropout: 4-79                [1, 8, 1024, 1024]        --
+│    │    │    └─Linear: 4-80                 [1, 1024, 512]            262,656
+│    │    └─Dropout: 3-50                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-51                   [1, 1024, 512]            1,024
+│    │    └─PositionwiseFeedForward: 3-52     [1, 1024, 512]            --
+│    │    │    └─Linear: 4-81                 [1, 1024, 2048]
+1,050,624
+│    │    │    └─GELU: 4-82                   [1, 1024, 2048]           --
+│    │    │    └─Dropout: 4-83                [1, 1024, 2048]           --
+│    │    │    └─Linear: 4-84                 [1, 1024, 512]
+1,049,088
+│    │    └─Dropout: 3-53                     [1, 1024, 512]            --
+│    │    └─LayerNorm: 3-54                   [1, 1024, 512]            1,024
+├─Linear: 1-5                                 [1, 1024, 130000]
+66,690,000
+================================================================================
+===============
+Total params: 158,455,760
+Trainable params: 158,455,760
+Non-trainable params: 0
+Total mult-adds (M): 158.46
+================================================================================
+===============
+Input size (MB): 2.11
+Forward/backward pass size (MB): 1471.81
+Params size (MB): 633.82
+Estimated Total Size (MB): 2107.74
+================================================================================
+===============
+    \end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
